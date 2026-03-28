@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Phase 1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%230a0a0a'/%3E%3Ctext x='90' y='108' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='72' fill='%23c9a227'%3EP1%3C/text%3E%3C/svg%3E">
+<title>Phase 1 — Base Building</title>
+<script>
+const manifest = {
+  name: 'Phase 1 — Base Building',
+  short_name: 'Phase 1',
+  start_url: '.',
+  display: 'standalone',
+  background_color: '#0a0a0a',
+  theme_color: '#0a0a0a',
+  icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%230a0a0a'/%3E%3Ctext x='90' y='108' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='72' fill='%23c9a227'%3EP1%3C/text%3E%3C/svg%3E", sizes: 'any', type: 'image/svg+xml' }]
+};
+const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+const link = document.createElement('link');
+link.rel = 'manifest';
+link.href = URL.createObjectURL(blob);
+document.head.appendChild(link);
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #0a0a0a; --surface: #141414; --surface2: #1a1a1a;
+    --border: #222; --border-light: #333;
+    --text: #e8e4de; --muted: #777; --dim: #555;
+    --accent: #c9a227; --accent-dim: #8a7020;
+    --red: #c0392b; --green: #27ae60; --blue: #2980b9;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.5; min-height: 100vh; padding-bottom: 80px; overscroll-behavior: none; }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+  .header { padding: 20px 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+  .header .tag { color: var(--accent); font: 700 10px/1 var(--mono); letter-spacing: 3px; margin-bottom: 6px; }
+  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .header .sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+  /* Tabs */
+  .tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--border); -webkit-overflow-scrolling: touch; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 10px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font: 400 11px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: all 0.15s; touch-action: manipulation; }
+  .tab.active { color: var(--bg); background: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+
+  .panel { display: none; padding: 20px 0; }
+  .panel.active { display: block; }
+
+  /* Sections */
+  .section { margin-bottom: 24px; }
+  .section-title { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 12px; font: 600 13px/1 var(--mono); letter-spacing: 0.5px; color: var(--text); }
+  .section-title::before { content: '\25A0'; color: var(--accent); font-size: 12px; }
+
+  .info-box { background: var(--surface); border: 1px solid var(--border); padding: 16px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; }
+  .info-box .label { color: var(--accent); font: 700 10px/1 var(--mono); letter-spacing: 2px; margin-bottom: 8px; }
+  .info-box.highlight { border-color: rgba(201,162,39,0.2); }
+
+  /* Form elements */
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; color: var(--muted); font: 400 10px/1 var(--mono); letter-spacing: 1px; margin-bottom: 6px; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); padding: 10px 12px; font: 13px var(--mono);
+    -webkit-appearance: none; border-radius: 0;
+  }
+  .form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23777' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px; }
+  .form-textarea { min-height: 60px; resize: vertical; font-family: var(--sans); }
+  .form-hint { color: var(--dim); font-size: 11px; margin-top: 4px; line-height: 1.4; }
+
+  .btn { width: 100%; padding: 12px; background: var(--accent); color: var(--bg); border: none; font: 700 12px/1 var(--mono); letter-spacing: 1px; cursor: pointer; text-transform: uppercase; touch-action: manipulation; }
+  .btn:active { opacity: 0.8; }
+  .btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); font-weight: 400; }
+  .btn.danger { background: transparent; border: 1px solid rgba(192,57,43,0.3); color: var(--red); font-weight: 400; font-size: 10px; opacity: 0.6; }
+  .btn.saved { background: var(--green); }
+
+  /* Checkbox rows */
+  .check-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer; -webkit-user-select: none; touch-action: manipulation; }
+  .check-box { width: 20px; height: 20px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--bg); font-weight: 700; flex-shrink: 0; }
+  .check-box.checked { background: var(--accent); }
+  .check-row .lift-name { color: var(--text); font-size: 13px; flex: 1; }
+  .check-row .lift-reps { color: var(--dim); font: 11px var(--mono); }
+  .check-row .lift-weight { color: var(--accent); font: 600 13px var(--mono); }
+  .check-row .lift-bump { color: var(--green); font: 10px var(--mono); margin-left: 4px; }
+
+  /* Data grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 12px; text-align: center; }
+  .stat-card .stat-label { color: var(--muted); font: 400 9px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .stat-card .stat-value { font: 700 26px/1 var(--mono); }
+  .stat-card .stat-sub { color: var(--dim); font: 10px var(--mono); margin-top: 4px; }
+  .stat-card .stat-value.green { color: var(--green); }
+  .stat-card .stat-value.red { color: var(--red); }
+  .stat-card .stat-value.gold { color: var(--accent); }
+
+  /* Progress bar */
+  .prog-bar { height: 3px; background: var(--border); margin-top: 6px; overflow: hidden; }
+  .prog-bar .fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+  .prog-bar .fill.done { background: var(--green); }
+
+  /* Exercise rows */
+  .ex-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: center; font-size: 13px; }
+  .ex-row .ex-name { color: var(--text); }
+  .ex-row .ex-sets { color: var(--muted); font: 12px var(--mono); }
+  .ex-row .ex-note { color: var(--dim); font-size: 11px; grid-column: 1 / -1; }
+
+  /* Log entries */
+  .log-entry { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .log-entry .log-date { color: var(--muted); font: 12px var(--mono); min-width: 65px; }
+  .log-entry .log-type { color: var(--accent); font: 12px var(--mono); min-width: 60px; text-transform: uppercase; }
+  .log-entry .log-notes { color: var(--dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .log-entry .log-dur { color: var(--muted); font: 11px var(--mono); }
+  .log-entry .log-del { color: var(--red); font-size: 14px; cursor: pointer; padding: 4px 8px; opacity: 0.5; touch-action: manipulation; }
+  .log-entry .log-del:active { opacity: 1; }
+
+  /* Table */
+  .data-table { width: 100%; border-collapse: collapse; font: 12px var(--mono); }
+  .data-table th { color: var(--muted); padding: 6px 4px; text-align: left; border-bottom: 1px solid var(--border); font-size: 9px; letter-spacing: 1px; font-weight: 400; }
+  .data-table td { padding: 6px 4px; border-bottom: 1px solid var(--border); }
+  .data-table .pos { color: var(--green); }
+  .data-table .neg { color: var(--red); }
+
+  /* Rule items */
+  .rule-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .rule-item .rule-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .rule-item .rule-num { color: var(--accent); font: 700 11px var(--mono); }
+  .rule-item .rule-name { color: var(--text); font-weight: 600; font-size: 13px; }
+  .rule-item .rule-detail { color: var(--muted); font-size: 12px; padding-left: 26px; line-height: 1.5; }
+
+  /* Diet items */
+  .diet-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .diet-item .diet-head { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
+  .diet-item .diet-num { color: var(--accent); font: 700 11px var(--mono); min-width: 18px; }
+  .diet-item .diet-rule { color: var(--text); font-weight: 600; font-size: 13px; }
+  .diet-item .diet-detail { color: var(--muted); font-size: 12px; padding-left: 26px; line-height: 1.5; }
+
+  /* Benchmark */
+  .bench-period { margin-bottom: 16px; }
+  .bench-period .bench-label { color: var(--accent); font: 700 12px var(--mono); letter-spacing: 1px; margin-bottom: 6px; }
+  .bench-row { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .bench-row .bench-key { color: var(--muted); text-transform: capitalize; }
+  .bench-row .bench-val { color: var(--text); font-family: var(--mono); }
+
+  /* Weekly min row */
+  .wmin-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .wmin-row .wmin-icon { font-size: 18px; width: 28px; }
+  .wmin-row .wmin-name { color: var(--text); font-size: 13px; flex: 1; }
+  .wmin-row .wmin-count { color: var(--accent); font: 700 16px var(--mono); }
+  .wmin-row .wmin-note { color: var(--dim); font-size: 11px; }
+
+  /* Collapsible */
+  .collapse-toggle { cursor: pointer; color: var(--muted); font: 11px var(--mono); letter-spacing: 1px; padding: 4px 0; touch-action: manipulation; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--green); color: var(--bg); padding: 10px 24px; font: 700 12px var(--mono); letter-spacing: 1px; z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+
+  /* Sub-tabs */
+  .sub-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .sub-tab { padding: 8px 14px; border: 1px solid var(--border); background: transparent; color: var(--muted); font: 11px var(--mono); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; touch-action: manipulation; }
+  .sub-tab.active { border-color: var(--accent); background: rgba(201,162,39,0.1); color: var(--accent); }
+
+  /* Export/Import */
+  .export-section { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .export-section .export-label { color: var(--muted); font: 10px var(--mono); letter-spacing: 1px; margin-bottom: 8px; }
+
+  /* Weight history */
+  .wh-entry { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .wh-entry .wh-date { color: var(--muted); font: 12px var(--mono); min-width: 65px; }
+  .wh-entry .wh-lift { color: var(--accent); font: 12px var(--mono); min-width: 60px; text-transform: uppercase; }
+  .wh-entry .wh-weight { color: var(--text); font: 600 12px var(--mono); }
+  .wh-entry .wh-tag { color: var(--dim); font: 10px var(--mono); }
+
+  /* Adjust form inline */
+  .adjust-form { display: flex; gap: 6px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+  .adjust-form input, .adjust-form select { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 6px 8px; font: 12px var(--mono); width: 70px; }
+  .adjust-form button { padding: 6px 12px; background: var(--accent); color: var(--bg); border: none; font: 700 10px var(--mono); cursor: pointer; touch-action: manipulation; }
+  .adjust-form button.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="tag">PHASE 1 — WEEKS 1-12</div>
+    <h1>Base Building</h1>
+    <div class="sub">Build the chassis. Get strong. Get lean. Get conditioned.</div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="panel-program" class="panel"></div>
+  <div id="panel-diet" class="panel"></div>
+  <div id="panel-rules" class="panel"></div>
+  <div id="panel-log" class="panel"></div>
+  <div id="panel-progress" class="panel"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// STORAGE (localStorage)
+// ═══════════════════════════════════════════════════════════
+const STORAGE_KEY = 'phase1-tracker-v2';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      STATE = migrateState(JSON.parse(raw));
+    }
+  } catch (e) {
+    console.error('Load failed:', e);
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
+  } catch (e) {
+    console.error('Save failed:', e);
+    showToast('SAVE FAILED');
+  }
+}
+
+function migrateState(saved) {
+  // Ensure all lifts have rep tracking (migration from linear-only)
+  if (!saved.liftReps) saved.liftReps = {};
+  ALL_LIFTS.forEach(lift => {
+    if (saved.liftReps[lift] === undefined) saved.liftReps[lift] = 5;
+  });
+  // Ensure weightHistory exists
+  if (!saved.weightHistory) saved.weightHistory = [];
+  // Ensure workoutLogs exists
+  if (!saved.workoutLogs) saved.workoutLogs = [];
+  // Ensure measurements exists
+  if (!saved.measurements) saved.measurements = [DEFAULT_STATE.measurements[0]];
+  // Ensure liftProgress exists
+  if (!saved.liftProgress) saved.liftProgress = { ...DEFAULT_STATE.liftProgress };
+  return saved;
+}
+
+// One-time migration from IndexedDB (if data exists there from previous version)
+function migrateFromIndexedDB() {
+  try {
+    if (!window.indexedDB) return;
+    if (localStorage.getItem(STORAGE_KEY)) return; // already have localStorage data
+    const req = indexedDB.open('phase1tracker', 1);
+    req.onsuccess = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains('data')) { db.close(); return; }
+      const tx = db.transaction('data', 'readonly');
+      const getReq = tx.objectStore('data').get('state');
+      getReq.onsuccess = () => {
+        if (getReq.result) {
+          STATE = migrateState(getReq.result);
+          saveState();
+          renderTabs();
+          renderAll();
+          showToast('DATA MIGRATED');
+        }
+        db.close();
+      };
+      getReq.onerror = () => db.close();
+    };
+    req.onerror = () => {};
+  } catch (e) {}
+}
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const ALL_LIFTS = ['squat', 'deadlift', 'bench', 'ohp', 'row'];
+
+const DEFAULT_STATE = {
+  measurements: [{ date: 'Starting', weight: 92, waist: 38, chest: 40, arms: 13.35, thigh: 23.5 }],
+  workoutLogs: [],
+  liftProgress: { squat: 70, deadlift: 70, bench: 40, ohp: 30, row: 40 },
+  liftReps: { squat: 5, deadlift: 5, bench: 5, ohp: 5, row: 5 },
+  weightHistory: []
+};
+
+let STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+// ═══════════════════════════════════════════════════════════
+// PROGRAM DATA
+// ═══════════════════════════════════════════════════════════
+const SESSION_A = [
+  { name: 'Back Squat', sets: '3x5-8', key: 'squat', note: 'Double prog: 3x5 to 3x8, then +5kg' },
+  { name: 'Bench Press', sets: '3x5-8', key: 'bench', note: 'Double prog: 3x5 to 3x8, then +5kg' },
+  { name: 'Barbell Row', sets: '3x5-8', key: 'row', note: 'Double prog: 3x5 to 3x8, then +5kg' },
+  { name: 'OHP (barbell)', sets: '3x5-8', key: 'ohp', note: 'Double prog: 3x5 to 3x8, then +5kg' },
+  { name: 'Face Pulls', sets: '3x15', key: null, note: 'Light, posture work' },
+  { name: 'Barbell Curl', sets: '3x10', key: null, note: 'Arm priority' },
+];
+
+const SESSION_B = [
+  { name: 'Deadlift', sets: '3x5-8', key: 'deadlift', note: 'Double prog: 3x5 to 3x8, then +5kg' },
+  { name: 'Bench Press', sets: '3x5-8', key: 'bench', note: 'Same weight/reps as Session A' },
+  { name: 'Pull-ups / Lat Pulldown', sets: '3xmax/8', key: null, note: 'Pulldown if <5 pull-ups' },
+  { name: 'DB Shoulder Press', sets: '3x10', key: null, note: 'Start 10kg each hand' },
+  { name: 'Dips / Tricep Extension', sets: '3x10', key: null, note: 'Bodyweight dips if possible' },
+  { name: 'Hammer Curls', sets: '3x10', key: null, note: 'Arm priority' },
+];
+
+const HOME_WO = [
+  { name: 'Push-ups', sets: '4xmax', note: 'Full range, chest to floor' },
+  { name: 'Bulgarian Split Squats', sets: '4x12', note: 'Each leg' },
+  { name: 'Inverted Rows', sets: '4x12', note: 'Or band rows' },
+  { name: 'Pike Push-ups', sets: '3x10', note: 'Feet elevated' },
+  { name: 'Plank', sets: '3x60s', note: 'Hollow body' },
+  { name: 'Hangboard Dead Hangs', sets: '3xmax', note: 'Open hand, grip' },
+];
+
+const DIET = [
+  { rule: '180g protein daily — non-negotiable', detail: 'Chicken, eggs, Greek yogurt, protein shake. Track this and nothing else.' },
+  { rule: 'Drop the cereal', detail: '3-4 eggs + toast, or overnight oats with protein powder.' },
+  { rule: 'Lunch stays as is', detail: 'Chicken, rice, salad. Add more chicken if short.' },
+  { rule: 'Evening meals — don\'t fight it', detail: 'Eat what the family eats. Add extra protein if needed.' },
+  { rule: 'Greek yogurt: training tool. Hummus: portioned.', detail: 'Yogurt freely. Hummus 2-3 tbsp max.' },
+  { rule: '3 litres of water daily', detail: 'Dehydration tanks performance and recovery.' },
+  { rule: 'No calorie counting', detail: 'Hit protein, eat until satisfied not stuffed.' },
+  { rule: 'Creatine 5g daily', detail: 'Every day including rest days.' },
+];
+
+const RULES = [
+  { rule: 'No zero weeks', detail: 'Minimum 4 training sessions every week. Childminding = home workout.' },
+  { rule: 'Protein first', detail: '180g minimum. Every day. Highest-impact change you can make.' },
+  { rule: 'Sleep is training', detail: '7+ hours. Where muscle builds and hormones recover. Late gym vs sleep? Sleep wins.' },
+  { rule: 'BJJ attendance is not optional', detail: 'The resistance is the reason to go, not to skip. Minimum 2x/week.' },
+  { rule: 'Progression or explanation', detail: 'Weight or reps go up, or you write down why.' },
+  { rule: 'The 10-minute rule', detail: 'Kit on, go, do 10 minutes. Then decide.' },
+  { rule: 'Less scrolling, more doing', detail: 'Screen time drains energy. Protect your focus.' },
+  { rule: 'Weekly measurements, no daily weigh-ins', detail: 'Weight fluctuates 1-2kg daily. Weekly, same conditions.' },
+];
+
+const BENCHMARKS = {
+  '3MO': { Weight:'88kg', Waist:'36"', Squat:'100kg', Deadlift:'100kg', Bench:'65kg', OHP:'45kg', Arms:'14"', Chest:'41.5"', Run:'Sub 9:30/mi', BJJ:'No gassing' },
+  '6MO': { Weight:'84kg', Waist:'34.5"', Squat:'115kg', Deadlift:'120kg', Bench:'75kg', OHP:'55kg', Arms:'14.5"', Chest:'43"', Run:'Sub 9:00/mi', BJJ:'2-3 techniques' },
+  '9MO': { Weight:'82kg', Waist:'33"', Squat:'125kg', Deadlift:'130kg', Bench:'85kg', OHP:'60kg', Arms:'15"', Chest:'44"', Run:'Sub 8:30/mi', BJJ:'First stripe' },
+};
+
+// ═══════════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function today() { return new Date().toISOString().split('T')[0]; }
+
+function h(tag, attrs, ...children) {
+  const el = document.createElement(tag);
+  if (attrs) Object.entries(attrs).forEach(([k, v]) => {
+    if (k === 'onclick' || k === 'onchange' || k === 'oninput') el[k] = v;
+    else if (k === 'html') el.innerHTML = v;
+    else if (k === 'class') el.className = v;
+    else if (k === 'style') Object.assign(el.style, v);
+    else el.setAttribute(k, v);
+  });
+  children.flat().forEach(c => {
+    if (c == null) return;
+    el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return el;
+}
+
+// ═══════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════
+const TABS = ['Program', 'Diet', 'Rules', 'Log', 'Progress'];
+let activeTab = 'Program';
+
+function renderTabs() {
+  const container = document.getElementById('tabs');
+  container.innerHTML = '';
+  TABS.forEach(t => {
+    const btn = h('button', {
+      class: 'tab' + (t === activeTab ? ' active' : ''),
+      onclick: () => { activeTab = t; renderTabs(); renderAll(); }
+    }, t);
+    container.appendChild(btn);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + activeTab.toLowerCase()).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+let expandedSessions = {};
+
+function renderProgram() {
+  const el = document.getElementById('panel-program');
+  el.innerHTML = '';
+
+  el.appendChild(h('div', { class: 'info-box' },
+    h('div', { class: 'label' }, 'PHASE 1 — BASE BUILDING'),
+    h('div', null, '12 weeks. Build the chassis. Get strong, get lean, build the conditioning base.'),
+    h('div', { style: { color: 'var(--muted)', fontSize: '12px', marginTop: '8px' } }, 'Priority when time is short: BJJ > Gym > Striking > Run. No zero weeks.')
+  ));
+
+  el.appendChild(h('div', { class: 'info-box highlight' },
+    h('div', { class: 'label' }, 'PROGRESSION RULES (5KG PLATES)'),
+    h('div', { html: '<strong style="color:var(--accent)">ALL LIFTS — Double Progression:</strong> 3x5 &rarr; 3x6 &rarr; 3x7 &rarr; 3x8 &rarr; +5kg, reset to 3x5. Two consecutive failures = deload 10%.' })
+  ));
+
+  // Weekly minimums
+  const wmin = h('div', { class: 'section' });
+  wmin.appendChild(h('div', { class: 'section-title' }, 'WEEKLY MINIMUMS'));
+  [{i:'*',n:'Gym (Session A or B)',c:'3x'}, {i:'*',n:'BJJ',c:'2x',note:'Build to 3x by week 8'}, {i:'*',n:'Run (easy, 3-5mi)',c:'1x'}, {i:'*',n:'Striking',c:'1x',note:'When returned'}].forEach(w => {
+    const row = h('div', { class: 'wmin-row' },
+      h('span', { class: 'wmin-icon', style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontWeight: '700', fontSize: '14px' } }, w.i),
+      h('span', { class: 'wmin-name' }, w.n),
+      h('span', { class: 'wmin-count' }, w.c),
+    );
+    if (w.note) row.appendChild(h('span', { class: 'wmin-note' }, w.note));
+    wmin.appendChild(row);
+  });
+  el.appendChild(wmin);
+
+  // Sessions
+  [{ id: 'a', label: 'SESSION A', exercises: SESSION_A }, { id: 'b', label: 'SESSION B', exercises: SESSION_B }, { id: 'home', label: 'HOME WORKOUT', exercises: HOME_WO }].forEach(s => {
+    const sec = h('div', { class: 'section' });
+    sec.appendChild(h('div', { class: 'section-title' }, s.label));
+    const toggle = h('div', { class: 'collapse-toggle', onclick: () => { expandedSessions[s.id] = !expandedSessions[s.id]; renderProgram(); } },
+      (expandedSessions[s.id] ? '- HIDE' : '+ SHOW EXERCISES'));
+    sec.appendChild(toggle);
+    if (expandedSessions[s.id]) {
+      s.exercises.forEach(ex => {
+        const reps = ex.key ? (STATE.liftReps[ex.key] || 5) : null;
+        const sets = ex.key ? `3x${reps}` : ex.sets;
+        const weight = ex.key ? ` — ${STATE.liftProgress[ex.key]}kg` : '';
+        const row = h('div', { class: 'ex-row' },
+          h('span', { class: 'ex-name' }, ex.name + weight),
+          h('span', { class: 'ex-sets' }, sets),
+          h('div', { class: 'ex-note' }, ex.note)
+        );
+        sec.appendChild(row);
+      });
+    }
+    el.appendChild(sec);
+  });
+
+  // Running
+  const run = h('div', { class: 'section' });
+  run.appendChild(h('div', { class: 'section-title' }, 'RUNNING PROTOCOL'));
+  run.appendChild(h('div', { style: { fontSize: '13px', lineHeight: '1.7' } }, 'Easy runs only. 3-5 miles, conversational pace. HR under 150bpm. No speed work until month 4. Trails or grass when possible.'));
+  el.appendChild(run);
+}
+
+function renderDiet() {
+  const el = document.getElementById('panel-diet');
+  el.innerHTML = '';
+
+  el.appendChild(h('div', { class: 'info-box' },
+    h('div', { class: 'label' }, 'DIET RULES — NOT A MEAL PLAN'),
+    h('div', null, 'Hit the protein target, follow the rules, body composition follows.')
+  ));
+
+  DIET.forEach((d, i) => {
+    el.appendChild(h('div', { class: 'diet-item' },
+      h('div', { class: 'diet-head' },
+        h('span', { class: 'diet-num' }, String(i+1).padStart(2,'0')),
+        h('span', { class: 'diet-rule' }, d.rule)
+      ),
+      h('div', { class: 'diet-detail' }, d.detail)
+    ));
+  });
+
+  const supp = h('div', { class: 'section', style: { marginTop: '20px' } });
+  supp.appendChild(h('div', { class: 'section-title' }, 'SUPPLEMENTS'));
+  supp.appendChild(h('div', { style: { fontSize: '13px', lineHeight: '1.7' } }, 'Creatine monohydrate 5g daily. Vitamin D 4000IU daily. Zinc 25mg daily. Magnesium glycinate 400mg before bed.'));
+  el.appendChild(supp);
+
+  const perf = h('div', { class: 'section' });
+  perf.appendChild(h('div', { class: 'section-title' }, 'HORMONAL OPTIMISATION — DIET FACTORS'));
+  perf.appendChild(h('div', { style: { fontSize: '13px', lineHeight: '1.7' } }, 'Heavy compound lifting drives testosterone. Zinc and vitamin D support testosterone levels. Dropping body fat to 13-18% optimises hormones. Hydration improves blood flow and recovery. The program IS the performance programme.'));
+  el.appendChild(perf);
+}
+
+function renderRules() {
+  const el = document.getElementById('panel-rules');
+  el.innerHTML = '';
+
+  el.appendChild(h('div', { class: 'info-box highlight' },
+    h('div', { style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontWeight: '700', marginBottom: '8px' } }, 'THE NON-NEGOTIABLES'),
+    h('div', null, 'These are rules, not guidelines. Break one, acknowledge it, get back on it. One bad day is one bad day.')
+  ));
+
+  RULES.forEach((r, i) => {
+    el.appendChild(h('div', { class: 'rule-item' },
+      h('div', { class: 'rule-head' },
+        h('span', { class: 'rule-num' }, String(i+1).padStart(2,'0')),
+        h('span', { class: 'rule-name' }, r.rule)
+      ),
+      h('div', { class: 'rule-detail' }, r.detail)
+    ));
+  });
+}
+
+// --- LOG TAB ---
+let logSubTab = 'workout';
+let logForm = {};
+
+function renderLog() {
+  const el = document.getElementById('panel-log');
+  el.innerHTML = '';
+
+  // Sub-tabs
+  const stabs = h('div', { class: 'sub-tabs' });
+  ['workout', 'measurements'].forEach(t => {
+    stabs.appendChild(h('button', {
+      class: 'sub-tab' + (logSubTab === t ? ' active' : ''),
+      onclick: () => { logSubTab = t; logForm = {}; renderLog(); }
+    }, t === 'workout' ? 'LOG WORKOUT' : 'LOG MEASUREMENTS'));
+  });
+  el.appendChild(stabs);
+
+  if (logSubTab === 'workout') {
+    renderWorkoutForm(el);
+  } else {
+    renderMeasurementForm(el);
+  }
+
+  // Recent logs
+  if (STATE.workoutLogs.length > 0) {
+    const sec = h('div', { class: 'section', style: { marginTop: '24px' } });
+    sec.appendChild(h('div', { class: 'section-title' }, `RECENT LOGS (${STATE.workoutLogs.length} total)`));
+    STATE.workoutLogs.slice(-10).reverse().forEach(log => {
+      const entry = h('div', { class: 'log-entry' },
+        h('span', { class: 'log-date' }, log.date),
+        h('span', { class: 'log-type' }, log.type.replace('_', ' ')),
+        h('span', { class: 'log-notes' }, log.notes || '—'),
+      );
+      if (log.duration) entry.appendChild(h('span', { class: 'log-dur' }, log.duration + 'min'));
+      const del = h('span', { class: 'log-del', onclick: (e) => {
+        e.stopPropagation();
+        if (confirm('Delete this entry?')) {
+          STATE.workoutLogs = STATE.workoutLogs.filter(l => l.id !== log.id);
+          saveState();
+          renderLog();
+          showToast('DELETED');
+        }
+      } }, 'x');
+      entry.appendChild(del);
+      sec.appendChild(entry);
+    });
+    el.appendChild(sec);
+  }
+}
+
+function renderWorkoutForm(el) {
+  const types = ['gym_a', 'gym_b', 'bjj', 'run', 'striking', 'home'];
+  const typeLabels = { gym_a: 'Gym — Session A', gym_b: 'Gym — Session B', bjj: 'BJJ', run: 'Run', striking: 'Striking', home: 'Home Workout' };
+
+  if (!logForm.type) logForm.type = 'gym_a';
+
+  // Type select
+  const typeGroup = h('div', { class: 'form-group' });
+  typeGroup.appendChild(h('label', { class: 'form-label' }, 'WORKOUT TYPE'));
+  const sel = h('select', { class: 'form-select', onchange: (e) => { logForm.type = e.target.value; logForm.lifts = {}; renderLog(); } });
+  types.forEach(t => {
+    const opt = h('option', { value: t }, typeLabels[t]);
+    if (t === logForm.type) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  typeGroup.appendChild(sel);
+  el.appendChild(typeGroup);
+
+  // Duration
+  const durGroup = h('div', { class: 'form-group' });
+  durGroup.appendChild(h('label', { class: 'form-label' }, 'DURATION (MINS)'));
+  durGroup.appendChild(h('input', { class: 'form-input', type: 'number', placeholder: '60', value: logForm.duration || '', oninput: (e) => logForm.duration = e.target.value }));
+  el.appendChild(durGroup);
+
+  // Lift checkboxes
+  const liftsForType = logForm.type === 'gym_a' ? ['squat', 'bench', 'row', 'ohp'] : logForm.type === 'gym_b' ? ['deadlift', 'bench'] : [];
+
+  if (liftsForType.length > 0) {
+    if (!logForm.lifts) logForm.lifts = {};
+    const liftGroup = h('div', { class: 'form-group' });
+    liftGroup.appendChild(h('label', { class: 'form-label' }, 'COMPLETED ALL SETS?'));
+    liftGroup.appendChild(h('div', { class: 'form-hint' }, 'All lifts: check = +1 rep. At 3x8: +5kg, reset to 3x5.'));
+
+    liftsForType.forEach(lift => {
+      const reps = STATE.liftReps[lift] || 5;
+      const weight = STATE.liftProgress[lift];
+      const checked = !!logForm.lifts[lift];
+
+      const row = h('div', { class: 'check-row', onclick: () => { logForm.lifts[lift] = !logForm.lifts[lift]; renderLog(); } },
+        h('div', { class: 'check-box' + (checked ? ' checked' : '') }, checked ? 'Y' : ''),
+        h('span', { class: 'lift-name' }, lift === 'ohp' ? 'Overhead Press' : lift.charAt(0).toUpperCase() + lift.slice(1)),
+        h('span', { class: 'lift-reps' }, `3x${reps}`),
+        h('span', { class: 'lift-weight' }, weight + 'kg'),
+      );
+      if (reps >= 8) row.appendChild(h('span', { class: 'lift-bump' }, '-> +5kg'));
+      liftGroup.appendChild(row);
+    });
+    el.appendChild(liftGroup);
+  }
+
+  // Notes
+  const notesGroup = h('div', { class: 'form-group' });
+  notesGroup.appendChild(h('label', { class: 'form-label' }, 'NOTES'));
+  notesGroup.appendChild(h('textarea', { class: 'form-textarea', placeholder: 'How it felt, energy, anything notable...', value: logForm.notes || '', oninput: (e) => logForm.notes = e.target.value }));
+  el.appendChild(notesGroup);
+
+  // Save button
+  el.appendChild(h('button', { class: 'btn', onclick: saveWorkout }, 'LOG WORKOUT'));
+}
+
+function saveWorkout() {
+  const entry = {
+    id: Date.now(),
+    date: today(),
+    type: logForm.type || 'gym_a',
+    notes: logForm.notes || '',
+    duration: logForm.duration || '',
+    liftUpdates: {}
+  };
+
+  if (logForm.lifts) {
+    ALL_LIFTS.forEach(lift => {
+      if (logForm.lifts[lift]) {
+        const reps = STATE.liftReps[lift] || 5;
+        if (reps >= 8) {
+          const oldWeight = STATE.liftProgress[lift];
+          STATE.liftProgress[lift] += 5;
+          STATE.liftReps[lift] = 5;
+          entry.liftUpdates[lift] = `-> ${STATE.liftProgress[lift]}kg @ 3x5`;
+          STATE.weightHistory.push({
+            lift: lift,
+            date: today(),
+            oldWeight: oldWeight,
+            weight: STATE.liftProgress[lift],
+            manual: false
+          });
+        } else {
+          STATE.liftReps[lift] = reps + 1;
+          entry.liftUpdates[lift] = `${STATE.liftProgress[lift]}kg @ 3x${STATE.liftReps[lift]}`;
+        }
+      }
+    });
+  }
+
+  STATE.workoutLogs.push(entry);
+  saveState();
+  logForm = {};
+  showToast('WORKOUT SAVED');
+  renderLog();
+  renderProgress();
+}
+
+function renderMeasurementForm(el) {
+  el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '14px' } }, 'Weekly, same time. Morning, after bathroom, before food.'));
+
+  const fields = [
+    { key: 'weight', label: 'WEIGHT (KG)', ph: '92' },
+    { key: 'waist', label: 'WAIST — across hip bone (inches)', ph: '38' },
+    { key: 'chest', label: 'CHEST (inches)', ph: '40' },
+    { key: 'arms', label: 'ARMS — bicep (inches)', ph: '13.35' },
+    { key: 'thigh', label: 'THIGH — mid (inches)', ph: '23.5' },
+  ];
+
+  fields.forEach(f => {
+    const g = h('div', { class: 'form-group' });
+    g.appendChild(h('label', { class: 'form-label' }, f.label));
+    g.appendChild(h('input', { class: 'form-input', type: 'number', step: '0.1', placeholder: f.ph, value: logForm[f.key] || '', oninput: (e) => logForm[f.key] = e.target.value }));
+    el.appendChild(g);
+  });
+
+  el.appendChild(h('button', { class: 'btn', onclick: () => {
+    STATE.measurements.push({
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+      weight: parseFloat(logForm.weight) || 0,
+      waist: parseFloat(logForm.waist) || 0,
+      chest: parseFloat(logForm.chest) || 0,
+      arms: parseFloat(logForm.arms) || 0,
+      thigh: parseFloat(logForm.thigh) || 0,
+    });
+    saveState();
+    logForm = {};
+    showToast('MEASUREMENTS SAVED');
+    renderLog();
+    renderProgress();
+  }}, 'LOG MEASUREMENTS'));
+}
+
+// --- PROGRESS TAB ---
+let adjustingLift = null;
+
+function renderProgress() {
+  const el = document.getElementById('panel-progress');
+  el.innerHTML = '';
+
+  // Weekly frequency
+  const now = Date.now();
+  const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
+  const thisWeek = STATE.workoutLogs.filter(l => new Date(l.date).getTime() >= weekAgo);
+
+  const counts = {
+    Gym: thisWeek.filter(l => l.type.startsWith('gym') || l.type === 'home').length,
+    BJJ: thisWeek.filter(l => l.type === 'bjj').length,
+    Run: thisWeek.filter(l => l.type === 'run').length,
+    Striking: thisWeek.filter(l => l.type === 'striking').length,
+  };
+  const targets = { Gym: 3, BJJ: 2, Run: 1, Striking: 1 };
+
+  const freq = h('div', { class: 'section' });
+  freq.appendChild(h('div', { class: 'section-title' }, "THIS WEEK'S FREQUENCY"));
+  const grid = h('div', { class: 'grid-2' });
+  Object.entries(counts).forEach(([label, done]) => {
+    const target = targets[label];
+    const colorClass = done >= target ? 'green' : done > 0 ? 'gold' : 'red';
+    grid.appendChild(h('div', { class: 'stat-card' },
+      h('div', { class: 'stat-label' }, label),
+      h('div', { class: 'stat-value ' + colorClass }, String(done)),
+      h('div', { class: 'stat-sub' }, 'of ' + target)
+    ));
+  });
+  freq.appendChild(grid);
+  el.appendChild(freq);
+
+  // Current lifts
+  const lifts = h('div', { class: 'section' });
+  lifts.appendChild(h('div', { class: 'section-title' }, 'CURRENT LIFT NUMBERS'));
+  const lgrid = h('div', { class: 'grid-2' });
+  Object.entries(STATE.liftProgress).forEach(([lift, weight]) => {
+    const reps = STATE.liftReps[lift] || 5;
+    const card = h('div', { class: 'stat-card' },
+      h('div', { class: 'stat-label' }, lift === 'ohp' ? 'OVERHEAD PRESS' : lift.toUpperCase()),
+    );
+    const valDiv = h('div', { class: 'stat-value gold' });
+    valDiv.innerHTML = weight + '<span style="font-size:12px;color:var(--dim)">kg</span>';
+    card.appendChild(valDiv);
+    card.appendChild(h('div', { class: 'stat-sub' }, '3x' + reps));
+    const bar = h('div', { class: 'prog-bar' });
+    const fill = h('div', { class: 'fill' + (reps >= 8 ? ' done' : '') });
+    fill.style.width = ((reps - 4) / 4 * 100) + '%';
+    bar.appendChild(fill);
+    card.appendChild(bar);
+
+    // Adjust button
+    const adjBtn = h('div', {
+      style: { color: 'var(--dim)', fontSize: '10px', fontFamily: 'var(--mono)', marginTop: '6px', cursor: 'pointer', letterSpacing: '1px' },
+      onclick: (e) => { e.stopPropagation(); adjustingLift = adjustingLift === lift ? null : lift; renderProgress(); }
+    }, adjustingLift === lift ? 'CANCEL' : 'ADJUST');
+    card.appendChild(adjBtn);
+
+    // Inline adjust form
+    if (adjustingLift === lift) {
+      const form = h('div', { class: 'adjust-form' });
+      const wInput = h('input', { type: 'number', placeholder: weight, value: '' });
+      const rSelect = h('select');
+      [5,6,7,8].forEach(r => {
+        const o = h('option', { value: r }, '3x' + r);
+        if (r === reps) o.selected = true;
+        rSelect.appendChild(o);
+      });
+      const saveBtn = h('button', { onclick: () => {
+        const newWeight = parseFloat(wInput.value) || weight;
+        const newReps = parseInt(rSelect.value) || reps;
+        if (newWeight !== weight || newReps !== reps) {
+          STATE.liftProgress[lift] = newWeight;
+          STATE.liftReps[lift] = newReps;
+          STATE.weightHistory.push({
+            lift: lift,
+            date: today(),
+            oldWeight: weight,
+            weight: newWeight,
+            manual: true
+          });
+          saveState();
+          showToast('ADJUSTED');
+        }
+        adjustingLift = null;
+        renderProgress();
+      }}, 'SAVE');
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'KG:'));
+      form.appendChild(wInput);
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'REPS:'));
+      form.appendChild(rSelect);
+      form.appendChild(saveBtn);
+      card.appendChild(form);
+    }
+
+    lgrid.appendChild(card);
+  });
+  lifts.appendChild(lgrid);
+  el.appendChild(lifts);
+
+  // Weight change history
+  if (STATE.weightHistory && STATE.weightHistory.length > 0) {
+    const whSec = h('div', { class: 'section' });
+    whSec.appendChild(h('div', { class: 'section-title' }, 'WEIGHT CHANGE HISTORY'));
+    const sorted = [...STATE.weightHistory].reverse();
+    sorted.forEach(wh => {
+      const entry = h('div', { class: 'wh-entry' },
+        h('span', { class: 'wh-date' }, wh.date),
+        h('span', { class: 'wh-lift' }, wh.lift === 'ohp' ? 'OHP' : wh.lift),
+        h('span', { class: 'wh-weight' }, (wh.oldWeight || '?') + 'kg -> ' + wh.weight + 'kg'),
+      );
+      if (wh.manual) entry.appendChild(h('span', { class: 'wh-tag' }, 'manual'));
+      whSec.appendChild(entry);
+    });
+    el.appendChild(whSec);
+  }
+
+  // Measurements
+  const meas = h('div', { class: 'section' });
+  meas.appendChild(h('div', { class: 'section-title' }, 'MEASUREMENT HISTORY'));
+  const table = h('table', { class: 'data-table' });
+  const thead = h('thead');
+  const tr = h('tr');
+  ['DATE','WEIGHT','WAIST','CHEST','ARMS','THIGH'].forEach(hdr => tr.appendChild(h('th', null, hdr)));
+  thead.appendChild(tr);
+  table.appendChild(thead);
+  const tbody = h('tbody');
+  const start = STATE.measurements[0];
+  STATE.measurements.forEach((m, i) => {
+    const row = h('tr');
+    row.appendChild(h('td', { style: { color: 'var(--muted)' } }, m.date));
+    ['weight','waist','chest','arms','thigh'].forEach(key => {
+      const diff = i > 0 ? m[key] - start[key] : 0;
+      const isGood = (key === 'waist' || key === 'weight' || key === 'thigh') ? diff < 0 : diff > 0;
+      const td = h('td', null, String(m[key]));
+      if (i > 0 && diff !== 0) {
+        td.classList.add(isGood ? 'pos' : 'neg');
+        td.innerHTML = m[key] + ` <span style="font-size:10px">(${diff > 0 ? '+' : ''}${diff.toFixed(1)})</span>`;
+      }
+      row.appendChild(td);
+    });
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  meas.appendChild(table);
+  el.appendChild(meas);
+
+  // Benchmarks
+  const bench = h('div', { class: 'section' });
+  bench.appendChild(h('div', { class: 'section-title' }, 'BENCHMARKS'));
+  Object.entries(BENCHMARKS).forEach(([period, targets]) => {
+    const bp = h('div', { class: 'bench-period' });
+    bp.appendChild(h('div', { class: 'bench-label' }, period + ' TARGET'));
+    Object.entries(targets).forEach(([k, v]) => {
+      bp.appendChild(h('div', { class: 'bench-row' },
+        h('span', { class: 'bench-key' }, k),
+        h('span', { class: 'bench-val' }, v)
+      ));
+    });
+    bench.appendChild(bp);
+  });
+  el.appendChild(bench);
+
+  // Export / Import / Reset
+  const exp = h('div', { class: 'export-section' });
+  exp.appendChild(h('div', { class: 'export-label' }, 'DATA BACKUP'));
+  exp.appendChild(h('button', { class: 'btn secondary', style: { marginBottom: '8px' }, onclick: () => {
+    const json = JSON.stringify(STATE, null, 2);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(json).then(() => showToast('DATA COPIED TO CLIPBOARD'));
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = json;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('DATA COPIED TO CLIPBOARD');
+    }
+  }}, 'EXPORT DATA (COPY)'));
+
+  exp.appendChild(h('button', { class: 'btn secondary', style: { marginBottom: '8px' }, onclick: () => {
+    const input = prompt('Paste exported data:');
+    if (input) {
+      try {
+        STATE = migrateState(JSON.parse(input));
+        saveState();
+        showToast('DATA RESTORED');
+        renderAll();
+      } catch (e) { alert('Invalid data'); }
+    }
+  }}, 'IMPORT DATA (PASTE)'));
+
+  exp.appendChild(h('button', { class: 'btn danger', onclick: () => {
+    if (confirm('Reset ALL data? This cannot be undone.')) {
+      STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      saveState();
+      showToast('DATA RESET');
+      renderAll();
+    }
+  }}, 'RESET ALL DATA'));
+  el.appendChild(exp);
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+function renderAll() {
+  renderProgram();
+  renderDiet();
+  renderRules();
+  renderLog();
+  renderProgress();
+}
+
+migrateFromIndexedDB();
+loadState();
+renderTabs();
+renderAll();
+</script>
+</body>
+</html>
