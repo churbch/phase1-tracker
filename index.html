@@ -50,7 +50,6 @@ document.head.appendChild(link);
   .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
   .header .sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
 
-  /* Tabs */
   .tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--border); -webkit-overflow-scrolling: touch; }
   .tabs::-webkit-scrollbar { display: none; }
   .tab { padding: 10px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); font: 400 11px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: all 0.15s; touch-action: manipulation; }
@@ -59,7 +58,6 @@ document.head.appendChild(link);
   .panel { display: none; padding: 20px 0; }
   .panel.active { display: block; }
 
-  /* Sections */
   .section { margin-bottom: 24px; }
   .section-title { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 12px; font: 600 13px/1 var(--mono); letter-spacing: 0.5px; color: var(--text); }
   .section-title::before { content: '\25A0'; color: var(--accent); font-size: 12px; }
@@ -68,7 +66,6 @@ document.head.appendChild(link);
   .info-box .label { color: var(--accent); font: 700 10px/1 var(--mono); letter-spacing: 2px; margin-bottom: 8px; }
   .info-box.highlight { border-color: rgba(201,162,39,0.2); }
 
-  /* Form elements */
   .form-group { margin-bottom: 14px; }
   .form-label { display: block; color: var(--muted); font: 400 10px/1 var(--mono); letter-spacing: 1px; margin-bottom: 6px; }
   .form-input, .form-select, .form-textarea {
@@ -86,7 +83,6 @@ document.head.appendChild(link);
   .btn.danger { background: transparent; border: 1px solid rgba(192,57,43,0.3); color: var(--red); font-weight: 400; font-size: 10px; opacity: 0.6; }
   .btn.saved { background: var(--green); }
 
-  /* Checkbox rows */
   .check-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer; -webkit-user-select: none; touch-action: manipulation; }
   .check-box { width: 20px; height: 20px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--bg); font-weight: 700; flex-shrink: 0; }
   .check-box.checked { background: var(--accent); }
@@ -95,7 +91,9 @@ document.head.appendChild(link);
   .check-row .lift-weight { color: var(--accent); font: 600 13px var(--mono); }
   .check-row .lift-bump { color: var(--green); font: 10px var(--mono); margin-left: 4px; }
 
-  /* Data grid */
+  .check-row .ex-inline-input { width: 50px; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 4px 6px; font: 12px var(--mono); text-align: center; -webkit-appearance: none; border-radius: 0; }
+  .check-row .ex-unit { color: var(--dim); font: 11px var(--mono); min-width: 20px; }
+
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 12px; text-align: center; }
   .stat-card .stat-label { color: var(--muted); font: 400 9px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
@@ -105,18 +103,15 @@ document.head.appendChild(link);
   .stat-card .stat-value.red { color: var(--red); }
   .stat-card .stat-value.gold { color: var(--accent); }
 
-  /* Progress bar */
   .prog-bar { height: 3px; background: var(--border); margin-top: 6px; overflow: hidden; }
   .prog-bar .fill { height: 100%; background: var(--accent); transition: width 0.3s; }
   .prog-bar .fill.done { background: var(--green); }
 
-  /* Exercise rows */
   .ex-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: center; font-size: 13px; }
   .ex-row .ex-name { color: var(--text); }
   .ex-row .ex-sets { color: var(--muted); font: 12px var(--mono); }
   .ex-row .ex-note { color: var(--dim); font-size: 11px; grid-column: 1 / -1; }
 
-  /* Log entries */
   .log-entry { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
   .log-entry .log-date { color: var(--muted); font: 12px var(--mono); min-width: 65px; }
   .log-entry .log-type { color: var(--accent); font: 12px var(--mono); min-width: 60px; text-transform: uppercase; }
@@ -125,76 +120,97 @@ document.head.appendChild(link);
   .log-entry .log-del { color: var(--red); font-size: 14px; cursor: pointer; padding: 4px 8px; opacity: 0.5; touch-action: manipulation; }
   .log-entry .log-del:active { opacity: 1; }
 
-  /* Table */
   .data-table { width: 100%; border-collapse: collapse; font: 12px var(--mono); }
   .data-table th { color: var(--muted); padding: 6px 4px; text-align: left; border-bottom: 1px solid var(--border); font-size: 9px; letter-spacing: 1px; font-weight: 400; }
   .data-table td { padding: 6px 4px; border-bottom: 1px solid var(--border); }
   .data-table .pos { color: var(--green); }
   .data-table .neg { color: var(--red); }
 
-  /* Rule items */
   .rule-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
   .rule-item .rule-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
   .rule-item .rule-num { color: var(--accent); font: 700 11px var(--mono); }
   .rule-item .rule-name { color: var(--text); font-weight: 600; font-size: 13px; }
   .rule-item .rule-detail { color: var(--muted); font-size: 12px; padding-left: 26px; line-height: 1.5; }
 
-  /* Diet items */
   .diet-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
   .diet-item .diet-head { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
   .diet-item .diet-num { color: var(--accent); font: 700 11px var(--mono); min-width: 18px; }
   .diet-item .diet-rule { color: var(--text); font-weight: 600; font-size: 13px; }
   .diet-item .diet-detail { color: var(--muted); font-size: 12px; padding-left: 26px; line-height: 1.5; }
 
-  /* Benchmark */
   .bench-period { margin-bottom: 16px; }
   .bench-period .bench-label { color: var(--accent); font: 700 12px var(--mono); letter-spacing: 1px; margin-bottom: 6px; }
   .bench-row { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
   .bench-row .bench-key { color: var(--muted); text-transform: capitalize; }
   .bench-row .bench-val { color: var(--text); font-family: var(--mono); }
 
-  /* Weekly min row */
   .wmin-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
   .wmin-row .wmin-icon { font-size: 18px; width: 28px; }
   .wmin-row .wmin-name { color: var(--text); font-size: 13px; flex: 1; }
   .wmin-row .wmin-count { color: var(--accent); font: 700 16px var(--mono); }
   .wmin-row .wmin-note { color: var(--dim); font-size: 11px; }
 
-  /* Collapsible */
   .collapse-toggle { cursor: pointer; color: var(--muted); font: 11px var(--mono); letter-spacing: 1px; padding: 4px 0; touch-action: manipulation; }
 
-  /* Toast */
   .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--green); color: var(--bg); padding: 10px 24px; font: 700 12px var(--mono); letter-spacing: 1px; z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
   .toast.show { opacity: 1; }
 
-  /* Sub-tabs */
-  .sub-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .sub-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .sub-tab { padding: 8px 14px; border: 1px solid var(--border); background: transparent; color: var(--muted); font: 11px var(--mono); letter-spacing: 1px; text-transform: uppercase; cursor: pointer; touch-action: manipulation; }
   .sub-tab.active { border-color: var(--accent); background: rgba(201,162,39,0.1); color: var(--accent); }
 
-  /* Export/Import */
   .export-section { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
   .export-section .export-label { color: var(--muted); font: 10px var(--mono); letter-spacing: 1px; margin-bottom: 8px; }
 
-  /* Weight history */
   .wh-entry { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
   .wh-entry .wh-date { color: var(--muted); font: 12px var(--mono); min-width: 65px; }
   .wh-entry .wh-lift { color: var(--accent); font: 12px var(--mono); min-width: 60px; text-transform: uppercase; }
   .wh-entry .wh-weight { color: var(--text); font: 600 12px var(--mono); }
   .wh-entry .wh-tag { color: var(--dim); font: 10px var(--mono); }
 
-  /* Adjust form inline */
   .adjust-form { display: flex; gap: 6px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
   .adjust-form input, .adjust-form select { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 6px 8px; font: 12px var(--mono); width: 70px; }
   .adjust-form button { padding: 6px 12px; background: var(--accent); color: var(--bg); border: none; font: 700 10px var(--mono); cursor: pointer; touch-action: manipulation; }
   .adjust-form button.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+
+  .group-label { color: var(--accent); font: 700 10px/1 var(--mono); letter-spacing: 2px; padding: 10px 0 4px; }
+
+  .protein-total { padding: 16px; text-align: center; margin: 12px 0; border: 1px solid var(--border); background: var(--surface); }
+  .protein-total .pt-num { font: 700 36px var(--mono); }
+  .protein-total .pt-num.hit { color: var(--green); }
+  .protein-total .pt-num.miss { color: var(--red); }
+  .protein-total .pt-target { color: var(--muted); font: 12px var(--mono); }
+
+  .food-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .food-row .food-name { flex: 1; font-size: 13px; }
+  .food-row .food-protein { color: var(--accent); font: 600 13px var(--mono); }
+  .food-row .food-serving { color: var(--dim); font-size: 11px; }
+  .food-row .food-del { color: var(--red); font-size: 14px; cursor: pointer; padding: 4px 8px; opacity: 0.5; touch-action: manipulation; }
+
+  .stepper { display: inline-flex; align-items: center; }
+  .stepper button { width: 30px; height: 30px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); font: 700 16px var(--mono); cursor: pointer; touch-action: manipulation; display: flex; align-items: center; justify-content: center; }
+  .stepper button:active { background: var(--accent); color: var(--bg); }
+  .stepper .stepper-val { width: 32px; height: 30px; background: var(--surface2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); color: var(--text); font: 600 14px var(--mono); display: flex; align-items: center; justify-content: center; }
+
+  .tpl-card { background: var(--surface); border: 1px solid var(--border); padding: 14px; margin-bottom: 10px; cursor: pointer; touch-action: manipulation; }
+  .tpl-card .tpl-name { font-weight: 600; font-size: 14px; }
+  .tpl-card .tpl-total { color: var(--accent); font: 600 13px var(--mono); }
+  .tpl-card .tpl-items { color: var(--dim); font-size: 12px; margin-top: 8px; display: none; }
+  .tpl-card.expanded .tpl-items { display: block; }
+
+  .archive-card { background: var(--surface); border: 1px solid var(--border); padding: 12px; margin-bottom: 8px; }
+  .archive-card .arc-head { display: flex; justify-content: space-between; align-items: center; cursor: pointer; touch-action: manipulation; }
+  .archive-card .arc-label { font: 600 12px var(--mono); color: var(--accent); }
+  .archive-card .arc-dates { color: var(--dim); font: 11px var(--mono); }
+  .archive-card .arc-detail { display: none; margin-top: 10px; font-size: 12px; }
+  .archive-card.expanded .arc-detail { display: block; }
 </style>
 </head>
 <body>
 
 <div class="container">
   <div class="header">
-    <div class="tag">PHASE 1 — WEEKS 1-12</div>
+    <div class="tag" id="phase-tag">PHASE 1 — WEEK 1</div>
     <h1>Base Building</h1>
     <div class="sub">Build the chassis. Get strong. Get lean. Get conditioned.</div>
   </div>
@@ -206,58 +222,161 @@ document.head.appendChild(link);
   <div id="panel-rules" class="panel"></div>
   <div id="panel-log" class="panel"></div>
   <div id="panel-progress" class="panel"></div>
+  <div id="panel-protein" class="panel"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════════════════
-// STORAGE (localStorage)
+// EXERCISE DEFINITIONS (constant — never in state)
+// ═══════════════════════════════════════════════════════════
+const EX = {
+  elliptical:   { name: 'Elliptical (Zone 2)', type: 'cardio',     category: 'cardio' },
+  squat:        { name: 'Back Squat',          type: 'barbell',    category: 'main', sets: 3, minReps: 5, maxReps: 8, increment: 5 },
+  deadlift:     { name: 'Deadlift',            type: 'barbell',    category: 'main', sets: 3, minReps: 5, maxReps: 8, increment: 5 },
+  bench:        { name: 'Bench Press',         type: 'barbell',    category: 'main', sets: 3, minReps: 5, maxReps: 8, increment: 5 },
+  ohp:          { name: 'Overhead Press',      type: 'barbell',    category: 'main', sets: 3, minReps: 5, maxReps: 8, increment: 5 },
+  row:          { name: 'Barbell Row',         type: 'barbell',    category: 'main', sets: 3, minReps: 5, maxReps: 8, increment: 5 },
+  face_pull:    { name: 'Face Pulls',          type: 'cable',      category: 'acc', sets: 3, targetReps: 15, progression: 'weight' },
+  barbell_curl: { name: 'Barbell Curl',        type: 'barbell',    category: 'acc', sets: 3, targetReps: 10, progression: 'weight' },
+  pullup:       { name: 'Pull-ups',            type: 'bodyweight', category: 'acc', sets: 3, progression: 'reps' },
+  lat_pulldown: { name: 'Lat Pulldown',        type: 'cable',      category: 'acc', sets: 3, targetReps: 8,  progression: 'weight' },
+  db_shoulder:  { name: 'DB Shoulder Press',   type: 'dumbbell',   category: 'acc', sets: 3, targetReps: 10, progression: 'weight' },
+  dip:          { name: 'Dips',                type: 'bodyweight', category: 'acc', sets: 3, targetReps: 10, progression: 'reps' },
+  tricep_ext:   { name: 'Tricep Extension',    type: 'cable',      category: 'acc', sets: 3, targetReps: 10, progression: 'weight' },
+  hammer_curl:  { name: 'Hammer Curls',        type: 'dumbbell',   category: 'acc', sets: 3, targetReps: 10, progression: 'weight' },
+  hip_thrust:   { name: 'Hip Thrust',          type: 'barbell',    category: 'add', sets: 3, targetReps: 12, progression: 'weight' },
+  farmer_walk:  { name: "Farmer's Walks",      type: 'dumbbell',   category: 'add', sets: 3, progression: 'weight', unit: '30m' },
+  ab_wheel:     { name: 'Ab Wheel Rollout',    type: 'bodyweight', category: 'add', sets: 3, targetReps: 8,  progression: 'reps' },
+  dead_hang:    { name: 'Dead Hangs',          type: 'time',       category: 'add', sets: 3, progression: 'time' },
+  pushup:       { name: 'Push-ups',            type: 'bodyweight', category: 'home', sets: 4, progression: 'reps' },
+  bss:          { name: 'Bulgarian Split Sq',  type: 'bodyweight', category: 'home', sets: 4, targetReps: 12, progression: 'reps' },
+  inverted_row: { name: 'Inverted Rows',       type: 'bodyweight', category: 'home', sets: 4, targetReps: 12, progression: 'reps' },
+  pike_pushup:  { name: 'Pike Push-ups',       type: 'bodyweight', category: 'home', sets: 3, targetReps: 10, progression: 'reps' },
+  plank:        { name: 'Plank',               type: 'time',       category: 'home', sets: 3, progression: 'time' },
+  hangboard:    { name: 'Hangboard Hangs',     type: 'time',       category: 'home', sets: 3, progression: 'time' },
+};
+
+const MAIN_LIFTS = ['squat', 'deadlift', 'bench', 'ohp', 'row'];
+
+const DEFAULT_EXERCISES = {
+  squat: { weight: 70, reps: 5 }, deadlift: { weight: 70, reps: 5 }, bench: { weight: 40, reps: 5 },
+  ohp: { weight: 30, reps: 5 }, row: { weight: 40, reps: 5 },
+  face_pull: { weight: 10 }, barbell_curl: { weight: 20 }, lat_pulldown: { weight: 40 },
+  db_shoulder: { weight: 10 }, tricep_ext: { weight: 15 }, hammer_curl: { weight: 10 },
+  hip_thrust: { weight: 40 }, farmer_walk: { weight: 20 },
+  pullup: { reps: 0 }, dip: { reps: 10 }, ab_wheel: { reps: 8 },
+  pushup: { reps: 0 }, bss: { reps: 12 }, inverted_row: { reps: 12 }, pike_pushup: { reps: 10 },
+  dead_hang: { seconds: 30 }, plank: { seconds: 60 }, hangboard: { seconds: 0 },
+  elliptical: { minutes: 20, avgHR: null },
+};
+
+const DEFAULT_PROTEIN_FOODS = [
+  { id: 1, name: 'Chicken fillet', proteinPer: 31, servingDesc: '1 fillet (~100g)' },
+  { id: 2, name: 'Scrambled eggs (x4)', proteinPer: 24, servingDesc: '4 eggs' },
+  { id: 3, name: 'Tinned tuna', proteinPer: 25, servingDesc: '1 tin drained' },
+  { id: 4, name: 'Greek yoghurt (fat free)', proteinPer: 50, servingDesc: '500g tub' },
+  { id: 5, name: 'Protein powder', proteinPer: 24, servingDesc: '1 scoop' },
+];
+
+// ═══════════════════════════════════════════════════════════
+// SESSIONS
+// ═══════════════════════════════════════════════════════════
+const SESSIONS = {
+  gym_a: { label: 'Gym — Session A', groups: [
+    { label: 'CARDIO', keys: ['elliptical'] },
+    { label: 'MAIN LIFTS', keys: ['squat', 'bench', 'row', 'ohp'], hint: 'Check = completed all sets at current reps. Auto-advances.' },
+    { label: 'ACCESSORIES', keys: ['face_pull', 'barbell_curl'] },
+    { label: 'ADDITIONAL', keys: ['hip_thrust', 'farmer_walk', 'ab_wheel', 'dead_hang'], hint: 'Optional ~10 min extra' },
+  ]},
+  gym_b: { label: 'Gym — Session B', groups: [
+    { label: 'CARDIO', keys: ['elliptical'] },
+    { label: 'MAIN LIFTS', keys: ['deadlift', 'bench'], hint: 'Check = completed all sets at current reps. Auto-advances.' },
+    { label: 'ACCESSORIES', keys: ['pullup', 'lat_pulldown', 'db_shoulder', 'dip', 'tricep_ext', 'hammer_curl'], hint: 'Check exercises you did' },
+    { label: 'ADDITIONAL', keys: ['hip_thrust', 'farmer_walk', 'ab_wheel', 'dead_hang'], hint: 'Optional ~10 min extra' },
+  ]},
+  home: { label: 'Home Workout', groups: [
+    { label: 'EXERCISES', keys: ['pushup', 'bss', 'inverted_row', 'pike_pushup', 'plank', 'hangboard'] },
+  ]},
+};
+
+// ═══════════════════════════════════════════════════════════
+// STORAGE
 // ═══════════════════════════════════════════════════════════
 const STORAGE_KEY = 'phase1-tracker-v2';
+
+const DEFAULT_STATE = {
+  measurements: [{ date: 'Starting', weight: 92, waist: 38, chest: 40, arms: 13.35, thigh: 23.5 }],
+  workoutLogs: [],
+  exercises: JSON.parse(JSON.stringify(DEFAULT_EXERCISES)),
+  weightHistory: [],
+  phaseStart: new Date().toISOString().split('T')[0],
+  phases: [],
+  proteinFoods: JSON.parse(JSON.stringify(DEFAULT_PROTEIN_FOODS)),
+  proteinTemplates: [],
+};
+
+let STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
 
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      STATE = migrateState(JSON.parse(raw));
-    }
-  } catch (e) {
-    console.error('Load failed:', e);
-  }
+    if (raw) STATE = migrateState(JSON.parse(raw));
+  } catch (e) { console.error('Load failed:', e); }
 }
 
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
-  } catch (e) {
-    console.error('Save failed:', e);
-    showToast('SAVE FAILED');
-  }
+  } catch (e) { console.error('Save failed:', e); showToast('SAVE FAILED'); }
 }
 
 function migrateState(saved) {
-  // Ensure all lifts have rep tracking (migration from linear-only)
-  if (!saved.liftReps) saved.liftReps = {};
-  ALL_LIFTS.forEach(lift => {
-    if (saved.liftReps[lift] === undefined) saved.liftReps[lift] = 5;
+  // Migration from old format (liftProgress/liftReps -> exercises)
+  if (saved.liftProgress && !saved.exercises) {
+    saved.exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+    MAIN_LIFTS.forEach(lift => {
+      if (saved.liftProgress[lift] !== undefined) saved.exercises[lift].weight = saved.liftProgress[lift];
+      if (saved.liftReps && saved.liftReps[lift] !== undefined) saved.exercises[lift].reps = saved.liftReps[lift];
+    });
+    delete saved.liftProgress;
+    delete saved.liftReps;
+  }
+  // Also handle case where liftProgress exists alongside exercises (shouldn't but safety)
+  if (saved.liftProgress) { delete saved.liftProgress; delete saved.liftReps; }
+
+  // Ensure exercises has all keys
+  if (!saved.exercises) saved.exercises = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+  Object.keys(DEFAULT_EXERCISES).forEach(key => {
+    if (!saved.exercises[key]) saved.exercises[key] = JSON.parse(JSON.stringify(DEFAULT_EXERCISES[key]));
   });
-  // Ensure weightHistory exists
-  if (!saved.weightHistory) saved.weightHistory = [];
-  // Ensure workoutLogs exists
+
+  // Migrate weightHistory lift -> exercise field
+  if (saved.weightHistory) {
+    saved.weightHistory.forEach(wh => {
+      if (wh.lift && !wh.exercise) { wh.exercise = wh.lift; delete wh.lift; }
+    });
+  }
+
+  // Ensure all fields exist
   if (!saved.workoutLogs) saved.workoutLogs = [];
-  // Ensure measurements exists
+  if (!saved.weightHistory) saved.weightHistory = [];
   if (!saved.measurements) saved.measurements = [DEFAULT_STATE.measurements[0]];
-  // Ensure liftProgress exists
-  if (!saved.liftProgress) saved.liftProgress = { ...DEFAULT_STATE.liftProgress };
+  if (!saved.phaseStart) {
+    saved.phaseStart = saved.workoutLogs.length > 0 ? saved.workoutLogs[0].date : new Date().toISOString().split('T')[0];
+  }
+  if (!saved.phases) saved.phases = [];
+  if (!saved.proteinFoods) saved.proteinFoods = JSON.parse(JSON.stringify(DEFAULT_PROTEIN_FOODS));
+  if (!saved.proteinTemplates) saved.proteinTemplates = [];
+
   return saved;
 }
 
-// One-time migration from IndexedDB (if data exists there from previous version)
 function migrateFromIndexedDB() {
   try {
     if (!window.indexedDB) return;
-    if (localStorage.getItem(STORAGE_KEY)) return; // already have localStorage data
+    if (localStorage.getItem(STORAGE_KEY)) return;
     const req = indexedDB.open('phase1tracker', 1);
     req.onsuccess = () => {
       const db = req.result;
@@ -265,13 +384,7 @@ function migrateFromIndexedDB() {
       const tx = db.transaction('data', 'readonly');
       const getReq = tx.objectStore('data').get('state');
       getReq.onsuccess = () => {
-        if (getReq.result) {
-          STATE = migrateState(getReq.result);
-          saveState();
-          renderTabs();
-          renderAll();
-          showToast('DATA MIGRATED');
-        }
+        if (getReq.result) { STATE = migrateState(getReq.result); saveState(); renderTabs(); renderAll(); showToast('DATA MIGRATED'); }
         db.close();
       };
       getReq.onerror = () => db.close();
@@ -281,50 +394,8 @@ function migrateFromIndexedDB() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════
-const ALL_LIFTS = ['squat', 'deadlift', 'bench', 'ohp', 'row'];
-
-const DEFAULT_STATE = {
-  measurements: [{ date: 'Starting', weight: 92, waist: 38, chest: 40, arms: 13.35, thigh: 23.5 }],
-  workoutLogs: [],
-  liftProgress: { squat: 70, deadlift: 70, bench: 40, ohp: 30, row: 40 },
-  liftReps: { squat: 5, deadlift: 5, bench: 5, ohp: 5, row: 5 },
-  weightHistory: []
-};
-
-let STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
-
-// ═══════════════════════════════════════════════════════════
 // PROGRAM DATA
 // ═══════════════════════════════════════════════════════════
-const SESSION_A = [
-  { name: 'Back Squat', sets: '3x5-8', key: 'squat', note: 'Double prog: 3x5 to 3x8, then +5kg' },
-  { name: 'Bench Press', sets: '3x5-8', key: 'bench', note: 'Double prog: 3x5 to 3x8, then +5kg' },
-  { name: 'Barbell Row', sets: '3x5-8', key: 'row', note: 'Double prog: 3x5 to 3x8, then +5kg' },
-  { name: 'OHP (barbell)', sets: '3x5-8', key: 'ohp', note: 'Double prog: 3x5 to 3x8, then +5kg' },
-  { name: 'Face Pulls', sets: '3x15', key: null, note: 'Light, posture work' },
-  { name: 'Barbell Curl', sets: '3x10', key: null, note: 'Arm priority' },
-];
-
-const SESSION_B = [
-  { name: 'Deadlift', sets: '3x5-8', key: 'deadlift', note: 'Double prog: 3x5 to 3x8, then +5kg' },
-  { name: 'Bench Press', sets: '3x5-8', key: 'bench', note: 'Same weight/reps as Session A' },
-  { name: 'Pull-ups / Lat Pulldown', sets: '3xmax/8', key: null, note: 'Pulldown if <5 pull-ups' },
-  { name: 'DB Shoulder Press', sets: '3x10', key: null, note: 'Start 10kg each hand' },
-  { name: 'Dips / Tricep Extension', sets: '3x10', key: null, note: 'Bodyweight dips if possible' },
-  { name: 'Hammer Curls', sets: '3x10', key: null, note: 'Arm priority' },
-];
-
-const HOME_WO = [
-  { name: 'Push-ups', sets: '4xmax', note: 'Full range, chest to floor' },
-  { name: 'Bulgarian Split Squats', sets: '4x12', note: 'Each leg' },
-  { name: 'Inverted Rows', sets: '4x12', note: 'Or band rows' },
-  { name: 'Pike Push-ups', sets: '3x10', note: 'Feet elevated' },
-  { name: 'Plank', sets: '3x60s', note: 'Hollow body' },
-  { name: 'Hangboard Dead Hangs', sets: '3xmax', note: 'Open hand, grip' },
-];
-
 const DIET = [
   { rule: '180g protein daily — non-negotiable', detail: 'Chicken, eggs, Greek yogurt, protein shake. Track this and nothing else.' },
   { rule: 'Drop the cereal', detail: '3-4 eggs + toast, or overnight oats with protein powder.' },
@@ -344,7 +415,7 @@ const RULES = [
   { rule: 'Progression or explanation', detail: 'Weight or reps go up, or you write down why.' },
   { rule: 'The 10-minute rule', detail: 'Kit on, go, do 10 minutes. Then decide.' },
   { rule: 'Less scrolling, more doing', detail: 'Screen time drains energy. Protect your focus.' },
-  { rule: 'Weekly measurements, no daily weigh-ins', detail: 'Weight fluctuates 1-2kg daily. Weekly, same conditions.' },
+  { rule: 'Monthly measurements only', detail: 'Weight fluctuates 1-2kg daily. Monthly, same conditions. No daily weigh-ins.' },
 ];
 
 const BENCHMARKS = {
@@ -381,28 +452,57 @@ function h(tag, attrs, ...children) {
   return el;
 }
 
+function exValue(key) {
+  const def = EX[key], st = STATE.exercises[key] || {};
+  if (def.category === 'main') return `${st.weight}kg @ ${def.sets}x${st.reps}`;
+  if (def.type === 'cardio') return `${st.minutes} min` + (st.avgHR ? ` / ${st.avgHR}bpm` : '');
+  if (def.type === 'dumbbell') return `${st.weight}kg/hand`;
+  if (def.progression === 'weight') return `${st.weight}kg`;
+  if (def.progression === 'reps') return `${st.reps}${st.reps === 0 ? ' (max)' : ''} reps`;
+  if (def.progression === 'time') return `${st.seconds}${st.seconds === 0 ? ' (max)' : ''}s`;
+  return '—';
+}
+
+function exSets(key) {
+  const def = EX[key], st = STATE.exercises[key] || {};
+  if (def.category === 'main') return `${def.sets}x${st.reps}`;
+  if (def.type === 'cardio') return '';
+  const reps = def.targetReps || (def.progression === 'reps' ? (st.reps || 'max') : '');
+  if (def.progression === 'time') return `${def.sets}x${st.seconds === 0 ? 'max' : st.seconds + 's'}`;
+  return `${def.sets}x${reps || 'max'}`;
+}
+
+function weekNum() {
+  const start = new Date(STATE.phaseStart);
+  const now = new Date();
+  return Math.max(1, Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000)) + 1);
+}
+
+function updateHeader() {
+  document.getElementById('phase-tag').textContent = `PHASE 1 — WEEK ${weekNum()}`;
+}
+
 // ═══════════════════════════════════════════════════════════
 // TABS
 // ═══════════════════════════════════════════════════════════
-const TABS = ['Program', 'Diet', 'Rules', 'Log', 'Progress'];
+const TABS = ['Program', 'Diet', 'Rules', 'Log', 'Progress', 'Protein'];
 let activeTab = 'Program';
 
 function renderTabs() {
   const container = document.getElementById('tabs');
   container.innerHTML = '';
   TABS.forEach(t => {
-    const btn = h('button', {
+    container.appendChild(h('button', {
       class: 'tab' + (t === activeTab ? ' active' : ''),
       onclick: () => { activeTab = t; renderTabs(); renderAll(); }
-    }, t);
-    container.appendChild(btn);
+    }, t));
   });
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + activeTab.toLowerCase()).classList.add('active');
 }
 
 // ═══════════════════════════════════════════════════════════
-// RENDER FUNCTIONS
+// RENDER: PROGRAM
 // ═══════════════════════════════════════════════════════════
 let expandedSessions = {};
 
@@ -417,16 +517,16 @@ function renderProgram() {
   ));
 
   el.appendChild(h('div', { class: 'info-box highlight' },
-    h('div', { class: 'label' }, 'PROGRESSION RULES (5KG PLATES)'),
-    h('div', { html: '<strong style="color:var(--accent)">ALL LIFTS — Double Progression:</strong> 3x5 &rarr; 3x6 &rarr; 3x7 &rarr; 3x8 &rarr; +5kg, reset to 3x5. Two consecutive failures = deload 10%.' })
+    h('div', { class: 'label' }, 'PROGRESSION RULES'),
+    h('div', { html: '<strong style="color:var(--accent)">Main Lifts — Double Progression:</strong> 3x5 &rarr; 3x6 &rarr; 3x7 &rarr; 3x8 &rarr; +5kg, reset to 3x5.<br>Two consecutive failures = deload 10%.<br><strong style="color:var(--accent)">Accessories:</strong> Track weight/reps and progress when ready.' })
   ));
 
   // Weekly minimums
   const wmin = h('div', { class: 'section' });
   wmin.appendChild(h('div', { class: 'section-title' }, 'WEEKLY MINIMUMS'));
-  [{i:'*',n:'Gym (Session A or B)',c:'3x'}, {i:'*',n:'BJJ',c:'2x',note:'Build to 3x by week 8'}, {i:'*',n:'Run (easy, 3-5mi)',c:'1x'}, {i:'*',n:'Striking',c:'1x',note:'When returned'}].forEach(w => {
+  [{n:'Gym (Session A or B)',c:'3x'}, {n:'BJJ',c:'2x',note:'Build to 3x by week 8'}, {n:'Run (easy, 3-5mi)',c:'1x'}, {n:'Striking',c:'1x',note:'When returned'}].forEach(w => {
     const row = h('div', { class: 'wmin-row' },
-      h('span', { class: 'wmin-icon', style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontWeight: '700', fontSize: '14px' } }, w.i),
+      h('span', { class: 'wmin-icon', style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontWeight: '700', fontSize: '14px' } }, '*'),
       h('span', { class: 'wmin-name' }, w.n),
       h('span', { class: 'wmin-count' }, w.c),
     );
@@ -436,23 +536,33 @@ function renderProgram() {
   el.appendChild(wmin);
 
   // Sessions
-  [{ id: 'a', label: 'SESSION A', exercises: SESSION_A }, { id: 'b', label: 'SESSION B', exercises: SESSION_B }, { id: 'home', label: 'HOME WORKOUT', exercises: HOME_WO }].forEach(s => {
+  [
+    { id: 'a', label: 'SESSION A', session: SESSIONS.gym_a },
+    { id: 'b', label: 'SESSION B', session: SESSIONS.gym_b },
+    { id: 'home', label: 'HOME WORKOUT', session: SESSIONS.home },
+  ].forEach(s => {
     const sec = h('div', { class: 'section' });
     sec.appendChild(h('div', { class: 'section-title' }, s.label));
-    const toggle = h('div', { class: 'collapse-toggle', onclick: () => { expandedSessions[s.id] = !expandedSessions[s.id]; renderProgram(); } },
-      (expandedSessions[s.id] ? '- HIDE' : '+ SHOW EXERCISES'));
-    sec.appendChild(toggle);
+    sec.appendChild(h('div', { class: 'collapse-toggle', onclick: () => { expandedSessions[s.id] = !expandedSessions[s.id]; renderProgram(); } },
+      (expandedSessions[s.id] ? '- HIDE' : '+ SHOW EXERCISES')));
     if (expandedSessions[s.id]) {
-      s.exercises.forEach(ex => {
-        const reps = ex.key ? (STATE.liftReps[ex.key] || 5) : null;
-        const sets = ex.key ? `3x${reps}` : ex.sets;
-        const weight = ex.key ? ` — ${STATE.liftProgress[ex.key]}kg` : '';
-        const row = h('div', { class: 'ex-row' },
-          h('span', { class: 'ex-name' }, ex.name + weight),
-          h('span', { class: 'ex-sets' }, sets),
-          h('div', { class: 'ex-note' }, ex.note)
-        );
-        sec.appendChild(row);
+      s.session.groups.forEach(g => {
+        sec.appendChild(h('div', { class: 'group-label' }, g.label));
+        g.keys.forEach(key => {
+          const def = EX[key];
+          const st = STATE.exercises[key] || {};
+          let nameStr = def.name;
+          let valueStr = exValue(key);
+          let setsStr = exSets(key);
+          const row = h('div', { class: 'ex-row' },
+            h('span', { class: 'ex-name' }, nameStr),
+            h('span', { class: 'ex-sets' }, setsStr),
+          );
+          if (def.category === 'main' || def.progression === 'weight' || def.type === 'dumbbell') {
+            row.appendChild(h('div', { class: 'ex-note' }, valueStr));
+          }
+          sec.appendChild(row);
+        });
       });
     }
     el.appendChild(sec);
@@ -465,15 +575,16 @@ function renderProgram() {
   el.appendChild(run);
 }
 
+// ═══════════════════════════════════════════════════════════
+// RENDER: DIET
+// ═══════════════════════════════════════════════════════════
 function renderDiet() {
   const el = document.getElementById('panel-diet');
   el.innerHTML = '';
-
   el.appendChild(h('div', { class: 'info-box' },
     h('div', { class: 'label' }, 'DIET RULES — NOT A MEAL PLAN'),
     h('div', null, 'Hit the protein target, follow the rules, body composition follows.')
   ));
-
   DIET.forEach((d, i) => {
     el.appendChild(h('div', { class: 'diet-item' },
       h('div', { class: 'diet-head' },
@@ -483,27 +594,26 @@ function renderDiet() {
       h('div', { class: 'diet-detail' }, d.detail)
     ));
   });
-
   const supp = h('div', { class: 'section', style: { marginTop: '20px' } });
   supp.appendChild(h('div', { class: 'section-title' }, 'SUPPLEMENTS'));
   supp.appendChild(h('div', { style: { fontSize: '13px', lineHeight: '1.7' } }, 'Creatine monohydrate 5g daily. Vitamin D 4000IU daily. Zinc 25mg daily. Magnesium glycinate 400mg before bed.'));
   el.appendChild(supp);
-
   const perf = h('div', { class: 'section' });
   perf.appendChild(h('div', { class: 'section-title' }, 'HORMONAL OPTIMISATION — DIET FACTORS'));
   perf.appendChild(h('div', { style: { fontSize: '13px', lineHeight: '1.7' } }, 'Heavy compound lifting drives testosterone. Zinc and vitamin D support testosterone levels. Dropping body fat to 13-18% optimises hormones. Hydration improves blood flow and recovery. The program IS the performance programme.'));
   el.appendChild(perf);
 }
 
+// ═══════════════════════════════════════════════════════════
+// RENDER: RULES
+// ═══════════════════════════════════════════════════════════
 function renderRules() {
   const el = document.getElementById('panel-rules');
   el.innerHTML = '';
-
   el.appendChild(h('div', { class: 'info-box highlight' },
     h('div', { style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontWeight: '700', marginBottom: '8px' } }, 'THE NON-NEGOTIABLES'),
     h('div', null, 'These are rules, not guidelines. Break one, acknowledge it, get back on it. One bad day is one bad day.')
   ));
-
   RULES.forEach((r, i) => {
     el.appendChild(h('div', { class: 'rule-item' },
       h('div', { class: 'rule-head' },
@@ -515,15 +625,15 @@ function renderRules() {
   });
 }
 
-// --- LOG TAB ---
+// ═══════════════════════════════════════════════════════════
+// RENDER: LOG
+// ═══════════════════════════════════════════════════════════
 let logSubTab = 'workout';
 let logForm = {};
 
 function renderLog() {
   const el = document.getElementById('panel-log');
   el.innerHTML = '';
-
-  // Sub-tabs
   const stabs = h('div', { class: 'sub-tabs' });
   ['workout', 'measurements'].forEach(t => {
     stabs.appendChild(h('button', {
@@ -533,11 +643,8 @@ function renderLog() {
   });
   el.appendChild(stabs);
 
-  if (logSubTab === 'workout') {
-    renderWorkoutForm(el);
-  } else {
-    renderMeasurementForm(el);
-  }
+  if (logSubTab === 'workout') renderWorkoutForm(el);
+  else renderMeasurementForm(el);
 
   // Recent logs
   if (STATE.workoutLogs.length > 0) {
@@ -550,16 +657,13 @@ function renderLog() {
         h('span', { class: 'log-notes' }, log.notes || '—'),
       );
       if (log.duration) entry.appendChild(h('span', { class: 'log-dur' }, log.duration + 'min'));
-      const del = h('span', { class: 'log-del', onclick: (e) => {
+      entry.appendChild(h('span', { class: 'log-del', onclick: (e) => {
         e.stopPropagation();
         if (confirm('Delete this entry?')) {
           STATE.workoutLogs = STATE.workoutLogs.filter(l => l.id !== log.id);
-          saveState();
-          renderLog();
-          showToast('DELETED');
+          saveState(); renderLog(); showToast('DELETED');
         }
-      } }, 'x');
-      entry.appendChild(del);
+      } }, 'x'));
       sec.appendChild(entry);
     });
     el.appendChild(sec);
@@ -571,11 +675,12 @@ function renderWorkoutForm(el) {
   const typeLabels = { gym_a: 'Gym — Session A', gym_b: 'Gym — Session B', bjj: 'BJJ', run: 'Run', striking: 'Striking', home: 'Home Workout' };
 
   if (!logForm.type) logForm.type = 'gym_a';
+  if (!logForm.exData) logForm.exData = {};
 
   // Type select
   const typeGroup = h('div', { class: 'form-group' });
   typeGroup.appendChild(h('label', { class: 'form-label' }, 'WORKOUT TYPE'));
-  const sel = h('select', { class: 'form-select', onchange: (e) => { logForm.type = e.target.value; logForm.lifts = {}; renderLog(); } });
+  const sel = h('select', { class: 'form-select', onchange: (e) => { logForm.type = e.target.value; logForm.exData = {}; renderLog(); } });
   types.forEach(t => {
     const opt = h('option', { value: t }, typeLabels[t]);
     if (t === logForm.type) opt.selected = true;
@@ -590,72 +695,130 @@ function renderWorkoutForm(el) {
   durGroup.appendChild(h('input', { class: 'form-input', type: 'number', placeholder: '60', value: logForm.duration || '', oninput: (e) => logForm.duration = e.target.value }));
   el.appendChild(durGroup);
 
-  // Lift checkboxes
-  const liftsForType = logForm.type === 'gym_a' ? ['squat', 'bench', 'row', 'ohp'] : logForm.type === 'gym_b' ? ['deadlift', 'bench'] : [];
+  // Exercise checkboxes for gym/home sessions
+  const session = SESSIONS[logForm.type];
+  if (session) {
+    session.groups.forEach(g => {
+      el.appendChild(h('div', { class: 'group-label' }, g.label));
+      if (g.hint) el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '4px', marginTop: '-2px' } }, g.hint));
 
-  if (liftsForType.length > 0) {
-    if (!logForm.lifts) logForm.lifts = {};
-    const liftGroup = h('div', { class: 'form-group' });
-    liftGroup.appendChild(h('label', { class: 'form-label' }, 'COMPLETED ALL SETS?'));
-    liftGroup.appendChild(h('div', { class: 'form-hint' }, 'All lifts: check = +1 rep. At 3x8: +5kg, reset to 3x5.'));
+      g.keys.forEach(key => {
+        const def = EX[key];
+        const st = STATE.exercises[key] || {};
+        if (!logForm.exData[key]) logForm.exData[key] = { checked: false, value: null };
+        const exd = logForm.exData[key];
+        const checked = exd.checked;
 
-    liftsForType.forEach(lift => {
-      const reps = STATE.liftReps[lift] || 5;
-      const weight = STATE.liftProgress[lift];
-      const checked = !!logForm.lifts[lift];
+        const row = h('div', { class: 'check-row' });
 
-      const row = h('div', { class: 'check-row', onclick: () => { logForm.lifts[lift] = !logForm.lifts[lift]; renderLog(); } },
-        h('div', { class: 'check-box' + (checked ? ' checked' : '') }, checked ? 'Y' : ''),
-        h('span', { class: 'lift-name' }, lift === 'ohp' ? 'Overhead Press' : lift.charAt(0).toUpperCase() + lift.slice(1)),
-        h('span', { class: 'lift-reps' }, `3x${reps}`),
-        h('span', { class: 'lift-weight' }, weight + 'kg'),
-      );
-      if (reps >= 8) row.appendChild(h('span', { class: 'lift-bump' }, '-> +5kg'));
-      liftGroup.appendChild(row);
+        // Checkbox
+        const box = h('div', { class: 'check-box' + (checked ? ' checked' : '') }, checked ? 'Y' : '');
+        box.onclick = (e) => { e.stopPropagation(); exd.checked = !exd.checked; renderLog(); };
+        row.appendChild(box);
+
+        // Name
+        row.appendChild(h('span', { class: 'lift-name' }, def.name));
+
+        if (def.category === 'main') {
+          // Main lift: show weight, reps, bump indicator
+          row.appendChild(h('span', { class: 'lift-reps' }, `${def.sets}x${st.reps}`));
+          row.appendChild(h('span', { class: 'lift-weight' }, st.weight + 'kg'));
+          if (st.reps >= def.maxReps) row.appendChild(h('span', { class: 'lift-bump' }, '-> +5kg'));
+        } else if (def.type === 'cardio') {
+          // Cardio: minutes + HR inputs
+          const minInput = h('input', { class: 'ex-inline-input', type: 'number', placeholder: String(st.minutes), value: exd.value !== null ? exd.value : '',
+            oninput: (e) => { e.stopPropagation(); exd.value = e.target.value; }, onclick: (e) => e.stopPropagation() });
+          row.appendChild(minInput);
+          row.appendChild(h('span', { class: 'ex-unit' }, 'min'));
+          const hrInput = h('input', { class: 'ex-inline-input', type: 'number', placeholder: 'HR', value: exd.hr || '',
+            oninput: (e) => { e.stopPropagation(); exd.hr = e.target.value; }, onclick: (e) => e.stopPropagation() });
+          row.appendChild(hrInput);
+          row.appendChild(h('span', { class: 'ex-unit' }, 'bpm'));
+        } else if (def.progression === 'weight') {
+          // Weight exercise: show sets, editable weight
+          row.appendChild(h('span', { class: 'lift-reps' }, exSets(key)));
+          const wInput = h('input', { class: 'ex-inline-input', type: 'number', placeholder: String(st.weight), value: exd.value !== null ? exd.value : '',
+            oninput: (e) => { e.stopPropagation(); exd.value = e.target.value; }, onclick: (e) => e.stopPropagation() });
+          row.appendChild(wInput);
+          row.appendChild(h('span', { class: 'ex-unit' }, def.type === 'dumbbell' ? 'kg/h' : 'kg'));
+        } else if (def.progression === 'reps') {
+          // Bodyweight: show sets, editable reps
+          row.appendChild(h('span', { class: 'lift-reps' }, `${def.sets}x`));
+          const rInput = h('input', { class: 'ex-inline-input', type: 'number', placeholder: st.reps === 0 ? 'max' : String(st.reps), value: exd.value !== null ? exd.value : '',
+            oninput: (e) => { e.stopPropagation(); exd.value = e.target.value; }, onclick: (e) => e.stopPropagation() });
+          row.appendChild(rInput);
+          row.appendChild(h('span', { class: 'ex-unit' }, 'reps'));
+        } else if (def.progression === 'time') {
+          // Time: show sets, editable seconds
+          row.appendChild(h('span', { class: 'lift-reps' }, `${def.sets}x`));
+          const tInput = h('input', { class: 'ex-inline-input', type: 'number', placeholder: st.seconds === 0 ? 'max' : String(st.seconds), value: exd.value !== null ? exd.value : '',
+            oninput: (e) => { e.stopPropagation(); exd.value = e.target.value; }, onclick: (e) => e.stopPropagation() });
+          row.appendChild(tInput);
+          row.appendChild(h('span', { class: 'ex-unit' }, 'sec'));
+        }
+
+        row.onclick = () => { exd.checked = !exd.checked; renderLog(); };
+        el.appendChild(row);
+      });
     });
-    el.appendChild(liftGroup);
   }
 
   // Notes
-  const notesGroup = h('div', { class: 'form-group' });
+  const notesGroup = h('div', { class: 'form-group', style: { marginTop: '14px' } });
   notesGroup.appendChild(h('label', { class: 'form-label' }, 'NOTES'));
   notesGroup.appendChild(h('textarea', { class: 'form-textarea', placeholder: 'How it felt, energy, anything notable...', value: logForm.notes || '', oninput: (e) => logForm.notes = e.target.value }));
   el.appendChild(notesGroup);
 
-  // Save button
   el.appendChild(h('button', { class: 'btn', onclick: saveWorkout }, 'LOG WORKOUT'));
 }
 
 function saveWorkout() {
   const entry = {
-    id: Date.now(),
-    date: today(),
-    type: logForm.type || 'gym_a',
-    notes: logForm.notes || '',
-    duration: logForm.duration || '',
-    liftUpdates: {}
+    id: Date.now(), date: today(), type: logForm.type || 'gym_a',
+    notes: logForm.notes || '', duration: logForm.duration || '', liftUpdates: {}
   };
 
-  if (logForm.lifts) {
-    ALL_LIFTS.forEach(lift => {
-      if (logForm.lifts[lift]) {
-        const reps = STATE.liftReps[lift] || 5;
-        if (reps >= 8) {
-          const oldWeight = STATE.liftProgress[lift];
-          STATE.liftProgress[lift] += 5;
-          STATE.liftReps[lift] = 5;
-          entry.liftUpdates[lift] = `-> ${STATE.liftProgress[lift]}kg @ 3x5`;
-          STATE.weightHistory.push({
-            lift: lift,
-            date: today(),
-            oldWeight: oldWeight,
-            weight: STATE.liftProgress[lift],
-            manual: false
-          });
+  if (logForm.exData) {
+    Object.entries(logForm.exData).forEach(([key, exd]) => {
+      if (!exd.checked) return;
+      const def = EX[key];
+      const st = STATE.exercises[key];
+      if (!def || !st) return;
+
+      if (def.category === 'main') {
+        // Double progression
+        if (st.reps >= def.maxReps) {
+          const oldWeight = st.weight;
+          st.weight += def.increment;
+          st.reps = def.minReps;
+          entry.liftUpdates[key] = `-> ${st.weight}kg @ ${def.sets}x${def.minReps}`;
+          STATE.weightHistory.push({ exercise: key, date: today(), oldWeight, weight: st.weight, manual: false });
         } else {
-          STATE.liftReps[lift] = reps + 1;
-          entry.liftUpdates[lift] = `${STATE.liftProgress[lift]}kg @ 3x${STATE.liftReps[lift]}`;
+          st.reps += 1;
+          entry.liftUpdates[key] = `${st.weight}kg @ ${def.sets}x${st.reps}`;
         }
+      } else if (def.type === 'cardio') {
+        const mins = parseInt(exd.value) || st.minutes;
+        const hr = parseInt(exd.hr) || null;
+        st.minutes = mins;
+        st.avgHR = hr;
+        entry.liftUpdates[key] = `${mins}min` + (hr ? ` @ ${hr}bpm` : '');
+      } else if (def.progression === 'weight') {
+        const val = parseFloat(exd.value);
+        if (val && val !== st.weight) {
+          const old = st.weight;
+          st.weight = val;
+          STATE.weightHistory.push({ exercise: key, date: today(), oldWeight: old, weight: val, manual: false });
+        }
+        entry.liftUpdates[key] = `${st.weight}kg`;
+      } else if (def.progression === 'reps') {
+        const val = parseInt(exd.value);
+        if (val && val !== st.reps) st.reps = val;
+        entry.liftUpdates[key] = `${st.reps} reps`;
+      } else if (def.progression === 'time') {
+        const val = parseInt(exd.value);
+        if (val && val !== st.seconds) st.seconds = val;
+        entry.liftUpdates[key] = `${st.seconds}s`;
       }
     });
   }
@@ -669,8 +832,7 @@ function saveWorkout() {
 }
 
 function renderMeasurementForm(el) {
-  el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '14px' } }, 'Weekly, same time. Morning, after bathroom, before food.'));
-
+  el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '14px' } }, 'Monthly, same time. Morning, after bathroom, before food.'));
   const fields = [
     { key: 'weight', label: 'WEIGHT (KG)', ph: '92' },
     { key: 'waist', label: 'WAIST — across hip bone (inches)', ph: '38' },
@@ -678,42 +840,39 @@ function renderMeasurementForm(el) {
     { key: 'arms', label: 'ARMS — bicep (inches)', ph: '13.35' },
     { key: 'thigh', label: 'THIGH — mid (inches)', ph: '23.5' },
   ];
-
   fields.forEach(f => {
     const g = h('div', { class: 'form-group' });
     g.appendChild(h('label', { class: 'form-label' }, f.label));
     g.appendChild(h('input', { class: 'form-input', type: 'number', step: '0.1', placeholder: f.ph, value: logForm[f.key] || '', oninput: (e) => logForm[f.key] = e.target.value }));
     el.appendChild(g);
   });
-
   el.appendChild(h('button', { class: 'btn', onclick: () => {
     STATE.measurements.push({
       date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-      weight: parseFloat(logForm.weight) || 0,
-      waist: parseFloat(logForm.waist) || 0,
-      chest: parseFloat(logForm.chest) || 0,
-      arms: parseFloat(logForm.arms) || 0,
-      thigh: parseFloat(logForm.thigh) || 0,
+      weight: parseFloat(logForm.weight) || 0, waist: parseFloat(logForm.waist) || 0,
+      chest: parseFloat(logForm.chest) || 0, arms: parseFloat(logForm.arms) || 0, thigh: parseFloat(logForm.thigh) || 0,
     });
-    saveState();
-    logForm = {};
-    showToast('MEASUREMENTS SAVED');
-    renderLog();
-    renderProgress();
+    saveState(); logForm = {}; showToast('MEASUREMENTS SAVED'); renderLog(); renderProgress();
   }}, 'LOG MEASUREMENTS'));
 }
 
-// --- PROGRESS TAB ---
-let adjustingLift = null;
+// ═══════════════════════════════════════════════════════════
+// RENDER: PROGRESS
+// ═══════════════════════════════════════════════════════════
+let adjustingEx = null;
+let showAllExercises = false;
 
 function renderProgress() {
   const el = document.getElementById('panel-progress');
   el.innerHTML = '';
 
-  // Weekly frequency
+  // Weekly frequency (anchored to phaseStart)
   const now = Date.now();
-  const weekAgo = now - 7 * 24 * 60 * 60 * 1000;
-  const thisWeek = STATE.workoutLogs.filter(l => new Date(l.date).getTime() >= weekAgo);
+  const phaseMs = new Date(STATE.phaseStart).getTime();
+  const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+  const currentWeekNum = Math.floor((now - phaseMs) / msPerWeek);
+  const weekStart = phaseMs + (currentWeekNum * msPerWeek);
+  const thisWeek = STATE.workoutLogs.filter(l => new Date(l.date).getTime() >= weekStart);
 
   const counts = {
     Gym: thisWeek.filter(l => l.type.startsWith('gym') || l.type === 'home').length,
@@ -724,7 +883,7 @@ function renderProgress() {
   const targets = { Gym: 3, BJJ: 2, Run: 1, Striking: 1 };
 
   const freq = h('div', { class: 'section' });
-  freq.appendChild(h('div', { class: 'section-title' }, "THIS WEEK'S FREQUENCY"));
+  freq.appendChild(h('div', { class: 'section-title' }, `THIS WEEK (WEEK ${weekNum()})`));
   const grid = h('div', { class: 'grid-2' });
   Object.entries(counts).forEach(([label, done]) => {
     const target = targets[label];
@@ -738,83 +897,46 @@ function renderProgress() {
   freq.appendChild(grid);
   el.appendChild(freq);
 
-  // Current lifts
-  const lifts = h('div', { class: 'section' });
-  lifts.appendChild(h('div', { class: 'section-title' }, 'CURRENT LIFT NUMBERS'));
-  const lgrid = h('div', { class: 'grid-2' });
-  Object.entries(STATE.liftProgress).forEach(([lift, weight]) => {
-    const reps = STATE.liftReps[lift] || 5;
-    const card = h('div', { class: 'stat-card' },
-      h('div', { class: 'stat-label' }, lift === 'ohp' ? 'OVERHEAD PRESS' : lift.toUpperCase()),
-    );
-    const valDiv = h('div', { class: 'stat-value gold' });
-    valDiv.innerHTML = weight + '<span style="font-size:12px;color:var(--dim)">kg</span>';
-    card.appendChild(valDiv);
-    card.appendChild(h('div', { class: 'stat-sub' }, '3x' + reps));
-    const bar = h('div', { class: 'prog-bar' });
-    const fill = h('div', { class: 'fill' + (reps >= 8 ? ' done' : '') });
-    fill.style.width = ((reps - 4) / 4 * 100) + '%';
-    bar.appendChild(fill);
-    card.appendChild(bar);
-
-    // Adjust button
-    const adjBtn = h('div', {
-      style: { color: 'var(--dim)', fontSize: '10px', fontFamily: 'var(--mono)', marginTop: '6px', cursor: 'pointer', letterSpacing: '1px' },
-      onclick: (e) => { e.stopPropagation(); adjustingLift = adjustingLift === lift ? null : lift; renderProgress(); }
-    }, adjustingLift === lift ? 'CANCEL' : 'ADJUST');
-    card.appendChild(adjBtn);
-
-    // Inline adjust form
-    if (adjustingLift === lift) {
-      const form = h('div', { class: 'adjust-form' });
-      const wInput = h('input', { type: 'number', placeholder: weight, value: '' });
-      const rSelect = h('select');
-      [5,6,7,8].forEach(r => {
-        const o = h('option', { value: r }, '3x' + r);
-        if (r === reps) o.selected = true;
-        rSelect.appendChild(o);
-      });
-      const saveBtn = h('button', { onclick: () => {
-        const newWeight = parseFloat(wInput.value) || weight;
-        const newReps = parseInt(rSelect.value) || reps;
-        if (newWeight !== weight || newReps !== reps) {
-          STATE.liftProgress[lift] = newWeight;
-          STATE.liftReps[lift] = newReps;
-          STATE.weightHistory.push({
-            lift: lift,
-            date: today(),
-            oldWeight: weight,
-            weight: newWeight,
-            manual: true
-          });
-          saveState();
-          showToast('ADJUSTED');
-        }
-        adjustingLift = null;
-        renderProgress();
-      }}, 'SAVE');
-      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'KG:'));
-      form.appendChild(wInput);
-      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'REPS:'));
-      form.appendChild(rSelect);
-      form.appendChild(saveBtn);
-      card.appendChild(form);
-    }
-
-    lgrid.appendChild(card);
+  // Main lifts
+  const mainSec = h('div', { class: 'section' });
+  mainSec.appendChild(h('div', { class: 'section-title' }, 'MAIN LIFTS'));
+  const mainGrid = h('div', { class: 'grid-2' });
+  MAIN_LIFTS.forEach(key => {
+    const def = EX[key];
+    const st = STATE.exercises[key];
+    mainGrid.appendChild(buildLiftCard(key, def, st));
   });
-  lifts.appendChild(lgrid);
-  el.appendChild(lifts);
+  mainSec.appendChild(mainGrid);
+  el.appendChild(mainSec);
+
+  // Accessories & additional
+  const accSec = h('div', { class: 'section' });
+  accSec.appendChild(h('div', { class: 'section-title' }, 'ALL EXERCISES'));
+  accSec.appendChild(h('div', { class: 'collapse-toggle', onclick: () => { showAllExercises = !showAllExercises; renderProgress(); } },
+    showAllExercises ? '- HIDE' : '+ SHOW ALL EXERCISE TRACKING'));
+
+  if (showAllExercises) {
+    const accGrid = h('div', { class: 'grid-2' });
+    Object.keys(EX).forEach(key => {
+      if (MAIN_LIFTS.includes(key)) return;
+      const def = EX[key];
+      const st = STATE.exercises[key];
+      if (!st) return;
+      accGrid.appendChild(buildExCard(key, def, st));
+    });
+    accSec.appendChild(accGrid);
+  }
+  el.appendChild(accSec);
 
   // Weight change history
   if (STATE.weightHistory && STATE.weightHistory.length > 0) {
     const whSec = h('div', { class: 'section' });
     whSec.appendChild(h('div', { class: 'section-title' }, 'WEIGHT CHANGE HISTORY'));
-    const sorted = [...STATE.weightHistory].reverse();
-    sorted.forEach(wh => {
+    [...STATE.weightHistory].reverse().slice(0, 20).forEach(wh => {
+      const exKey = wh.exercise || wh.lift || '?';
       const entry = h('div', { class: 'wh-entry' },
         h('span', { class: 'wh-date' }, wh.date),
-        h('span', { class: 'wh-lift' }, wh.lift === 'ohp' ? 'OHP' : wh.lift),
+        h('span', { class: 'wh-lift' }, exKey === 'ohp' ? 'OHP' : exKey.replace('_', ' ')),
         h('span', { class: 'wh-weight' }, (wh.oldWeight || '?') + 'kg -> ' + wh.weight + 'kg'),
       );
       if (wh.manual) entry.appendChild(h('span', { class: 'wh-tag' }, 'manual'));
@@ -869,20 +991,47 @@ function renderProgress() {
   });
   el.appendChild(bench);
 
-  // Export / Import / Reset
+  // Archived phases
+  if (STATE.phases.length > 0) {
+    const arcSec = h('div', { class: 'section' });
+    arcSec.appendChild(h('div', { class: 'section-title' }, 'ARCHIVED PHASES'));
+    STATE.phases.forEach((phase, idx) => {
+      const card = h('div', { class: 'archive-card' });
+      const head = h('div', { class: 'arc-head', onclick: () => { card.classList.toggle('expanded'); } },
+        h('span', { class: 'arc-label' }, phase.label || `Phase ${idx + 1}`),
+        h('span', { class: 'arc-dates' }, `${phase.startDate} to ${phase.endDate}`),
+      );
+      card.appendChild(head);
+      const detail = h('div', { class: 'arc-detail' });
+      detail.appendChild(h('div', { style: { color: 'var(--muted)', marginBottom: '6px' } }, `${(phase.workoutLogs || []).length} workouts logged`));
+      if (phase.exercises) {
+        MAIN_LIFTS.forEach(key => {
+          if (phase.exercises[key]) {
+            const ex = phase.exercises[key];
+            detail.appendChild(h('div', { style: { padding: '2px 0' } },
+              h('span', { style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: '11px', minWidth: '80px', display: 'inline-block' } }, key.toUpperCase()),
+              h('span', { style: { fontFamily: 'var(--mono)', fontSize: '12px' } }, `${ex.weight}kg @ 3x${ex.reps}`)
+            ));
+          }
+        });
+      }
+      card.appendChild(detail);
+      arcSec.appendChild(card);
+    });
+    el.appendChild(arcSec);
+  }
+
+  // Export / Import / Restart / Reset
   const exp = h('div', { class: 'export-section' });
-  exp.appendChild(h('div', { class: 'export-label' }, 'DATA BACKUP'));
+  exp.appendChild(h('div', { class: 'export-label' }, 'DATA MANAGEMENT'));
+
   exp.appendChild(h('button', { class: 'btn secondary', style: { marginBottom: '8px' }, onclick: () => {
     const json = JSON.stringify(STATE, null, 2);
     if (navigator.clipboard) {
       navigator.clipboard.writeText(json).then(() => showToast('DATA COPIED TO CLIPBOARD'));
     } else {
-      const ta = document.createElement('textarea');
-      ta.value = json;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+      const ta = document.createElement('textarea'); ta.value = json;
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
       showToast('DATA COPIED TO CLIPBOARD');
     }
   }}, 'EXPORT DATA (COPY)'));
@@ -892,33 +1041,377 @@ function renderProgress() {
     if (input) {
       try {
         STATE = migrateState(JSON.parse(input));
-        saveState();
-        showToast('DATA RESTORED');
-        renderAll();
+        saveState(); showToast('DATA RESTORED'); renderAll();
       } catch (e) { alert('Invalid data'); }
     }
   }}, 'IMPORT DATA (PASTE)'));
 
+  exp.appendChild(h('button', { class: 'btn secondary', style: { marginBottom: '8px', borderColor: 'var(--accent)', color: 'var(--accent)' }, onclick: softRestart }, 'RESTART PHASE'));
+
   exp.appendChild(h('button', { class: 'btn danger', onclick: () => {
     if (confirm('Reset ALL data? This cannot be undone.')) {
       STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
-      saveState();
-      showToast('DATA RESET');
-      renderAll();
+      saveState(); showToast('DATA RESET'); updateHeader(); renderAll();
     }
   }}, 'RESET ALL DATA'));
+
   el.appendChild(exp);
+}
+
+function buildLiftCard(key, def, st) {
+  const card = h('div', { class: 'stat-card' });
+  card.appendChild(h('div', { class: 'stat-label' }, key === 'ohp' ? 'OVERHEAD PRESS' : key.toUpperCase()));
+  const valDiv = h('div', { class: 'stat-value gold' });
+  valDiv.innerHTML = st.weight + '<span style="font-size:12px;color:var(--dim)">kg</span>';
+  card.appendChild(valDiv);
+  card.appendChild(h('div', { class: 'stat-sub' }, def.sets + 'x' + st.reps));
+  const bar = h('div', { class: 'prog-bar' });
+  const fill = h('div', { class: 'fill' + (st.reps >= def.maxReps ? ' done' : '') });
+  fill.style.width = ((st.reps - (def.minReps - 1)) / (def.maxReps - def.minReps + 1) * 100) + '%';
+  bar.appendChild(fill);
+  card.appendChild(bar);
+
+  // Adjust
+  card.appendChild(h('div', {
+    style: { color: 'var(--dim)', fontSize: '10px', fontFamily: 'var(--mono)', marginTop: '6px', cursor: 'pointer', letterSpacing: '1px' },
+    onclick: (e) => { e.stopPropagation(); adjustingEx = adjustingEx === key ? null : key; renderProgress(); }
+  }, adjustingEx === key ? 'CANCEL' : 'ADJUST'));
+
+  if (adjustingEx === key) {
+    const form = h('div', { class: 'adjust-form' });
+    const wInput = h('input', { type: 'number', placeholder: st.weight, value: '' });
+    const rSelect = h('select');
+    for (let r = def.minReps; r <= def.maxReps; r++) {
+      const o = h('option', { value: r }, def.sets + 'x' + r);
+      if (r === st.reps) o.selected = true;
+      rSelect.appendChild(o);
+    }
+    form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'KG:'));
+    form.appendChild(wInput);
+    form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'REPS:'));
+    form.appendChild(rSelect);
+    form.appendChild(h('button', { onclick: () => {
+      const nw = parseFloat(wInput.value) || st.weight;
+      const nr = parseInt(rSelect.value) || st.reps;
+      if (nw !== st.weight || nr !== st.reps) {
+        STATE.weightHistory.push({ exercise: key, date: today(), oldWeight: st.weight, weight: nw, manual: true });
+        st.weight = nw; st.reps = nr;
+        saveState(); showToast('ADJUSTED');
+      }
+      adjustingEx = null; renderProgress();
+    }}, 'SAVE'));
+    card.appendChild(form);
+  }
+  return card;
+}
+
+function buildExCard(key, def, st) {
+  const card = h('div', { class: 'stat-card' });
+  const label = def.name.length > 16 ? def.name.substring(0, 15) + '.' : def.name;
+  card.appendChild(h('div', { class: 'stat-label' }, label.toUpperCase()));
+
+  if (def.type === 'cardio') {
+    const valDiv = h('div', { class: 'stat-value gold', style: { fontSize: '20px' } });
+    valDiv.textContent = st.minutes + 'min';
+    card.appendChild(valDiv);
+    if (st.avgHR) card.appendChild(h('div', { class: 'stat-sub' }, 'HR ' + st.avgHR));
+    else card.appendChild(h('div', { class: 'stat-sub' }, 'Zone 2'));
+  } else if (def.progression === 'weight') {
+    const valDiv = h('div', { class: 'stat-value gold', style: { fontSize: '20px' } });
+    valDiv.innerHTML = st.weight + '<span style="font-size:10px;color:var(--dim)">' + (def.type === 'dumbbell' ? 'kg/h' : 'kg') + '</span>';
+    card.appendChild(valDiv);
+    card.appendChild(h('div', { class: 'stat-sub' }, exSets(key)));
+  } else if (def.progression === 'reps') {
+    const valDiv = h('div', { class: 'stat-value gold', style: { fontSize: '20px' } });
+    valDiv.textContent = st.reps === 0 ? 'max' : st.reps;
+    card.appendChild(valDiv);
+    card.appendChild(h('div', { class: 'stat-sub' }, def.sets + 'x reps'));
+  } else if (def.progression === 'time') {
+    const valDiv = h('div', { class: 'stat-value gold', style: { fontSize: '20px' } });
+    valDiv.textContent = st.seconds === 0 ? 'max' : st.seconds + 's';
+    card.appendChild(valDiv);
+    card.appendChild(h('div', { class: 'stat-sub' }, def.sets + 'x hold'));
+  }
+
+  // Adjust button
+  card.appendChild(h('div', {
+    style: { color: 'var(--dim)', fontSize: '10px', fontFamily: 'var(--mono)', marginTop: '6px', cursor: 'pointer', letterSpacing: '1px' },
+    onclick: (e) => { e.stopPropagation(); adjustingEx = adjustingEx === key ? null : key; renderProgress(); }
+  }, adjustingEx === key ? 'CANCEL' : 'ADJUST'));
+
+  if (adjustingEx === key) {
+    const form = h('div', { class: 'adjust-form' });
+    if (def.type === 'cardio') {
+      const mInput = h('input', { type: 'number', placeholder: st.minutes, value: '' });
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'MIN:'));
+      form.appendChild(mInput);
+      form.appendChild(h('button', { onclick: () => {
+        st.minutes = parseInt(mInput.value) || st.minutes;
+        saveState(); showToast('ADJUSTED'); adjustingEx = null; renderProgress();
+      }}, 'SAVE'));
+    } else if (def.progression === 'weight') {
+      const wInput = h('input', { type: 'number', placeholder: st.weight, value: '' });
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, def.type === 'dumbbell' ? 'KG/H:' : 'KG:'));
+      form.appendChild(wInput);
+      form.appendChild(h('button', { onclick: () => {
+        const nw = parseFloat(wInput.value) || st.weight;
+        if (nw !== st.weight) {
+          STATE.weightHistory.push({ exercise: key, date: today(), oldWeight: st.weight, weight: nw, manual: true });
+          st.weight = nw;
+        }
+        saveState(); showToast('ADJUSTED'); adjustingEx = null; renderProgress();
+      }}, 'SAVE'));
+    } else if (def.progression === 'reps') {
+      const rInput = h('input', { type: 'number', placeholder: st.reps, value: '' });
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'REPS:'));
+      form.appendChild(rInput);
+      form.appendChild(h('button', { onclick: () => {
+        st.reps = parseInt(rInput.value) || st.reps;
+        saveState(); showToast('ADJUSTED'); adjustingEx = null; renderProgress();
+      }}, 'SAVE'));
+    } else if (def.progression === 'time') {
+      const tInput = h('input', { type: 'number', placeholder: st.seconds, value: '' });
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'SEC:'));
+      form.appendChild(tInput);
+      form.appendChild(h('button', { onclick: () => {
+        st.seconds = parseInt(tInput.value) || st.seconds;
+        saveState(); showToast('ADJUSTED'); adjustingEx = null; renderProgress();
+      }}, 'SAVE'));
+    }
+    card.appendChild(form);
+  }
+  return card;
+}
+
+function softRestart() {
+  if (!confirm('Archive current data and restart phase?\nYour old logs will be saved and visible.\nUse ADJUST buttons to set new starting weights.')) return;
+
+  const phase = {
+    label: `Phase 1 — Run ${STATE.phases.length + 1}`,
+    startDate: STATE.phaseStart,
+    endDate: today(),
+    workoutLogs: STATE.workoutLogs,
+    exercises: JSON.parse(JSON.stringify(STATE.exercises)),
+    weightHistory: STATE.weightHistory,
+  };
+
+  STATE.phases.push(phase);
+  STATE.workoutLogs = [];
+  STATE.weightHistory = [];
+  STATE.phaseStart = today();
+  saveState();
+  updateHeader();
+  showToast('PHASE ARCHIVED — ADJUST WEIGHTS');
+  renderAll();
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER: PROTEIN
+// ═══════════════════════════════════════════════════════════
+let proteinSubTab = 'templates';
+let proteinForm = {};
+
+function renderProtein() {
+  const el = document.getElementById('panel-protein');
+  el.innerHTML = '';
+
+  const stabs = h('div', { class: 'sub-tabs' });
+  ['templates', 'foods'].forEach(t => {
+    stabs.appendChild(h('button', {
+      class: 'sub-tab' + (proteinSubTab === t ? ' active' : ''),
+      onclick: () => { proteinSubTab = t; proteinForm = {}; renderProtein(); }
+    }, t === 'templates' ? 'DAY PLANS' : 'MY FOODS'));
+  });
+  el.appendChild(stabs);
+
+  if (proteinSubTab === 'foods') renderFoods(el);
+  else renderTemplates(el);
+}
+
+function renderFoods(el) {
+  el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '12px' } }, 'Define your foods with protein per serving. These are used to build day plans.'));
+
+  STATE.proteinFoods.forEach(food => {
+    const row = h('div', { class: 'food-row' },
+      h('div', { style: { flex: 1 } },
+        h('div', { class: 'food-name' }, food.name),
+        h('div', { class: 'food-serving' }, food.servingDesc),
+      ),
+      h('div', { class: 'food-protein' }, food.proteinPer + 'g'),
+      h('span', { class: 'food-del', onclick: () => {
+        if (confirm(`Delete ${food.name}?`)) {
+          STATE.proteinFoods = STATE.proteinFoods.filter(f => f.id !== food.id);
+          saveState(); renderProtein();
+        }
+      }}, 'x'),
+    );
+    el.appendChild(row);
+  });
+
+  // Add food form
+  el.appendChild(h('div', { class: 'section-title', style: { marginTop: '20px' } }, 'ADD FOOD'));
+  const fg1 = h('div', { class: 'form-group' });
+  fg1.appendChild(h('label', { class: 'form-label' }, 'FOOD NAME'));
+  fg1.appendChild(h('input', { class: 'form-input', placeholder: 'e.g. Cottage cheese', value: proteinForm.name || '', oninput: (e) => proteinForm.name = e.target.value }));
+  el.appendChild(fg1);
+
+  const fg2 = h('div', { class: 'form-group' });
+  fg2.appendChild(h('label', { class: 'form-label' }, 'PROTEIN PER SERVING (G)'));
+  fg2.appendChild(h('input', { class: 'form-input', type: 'number', placeholder: '14', value: proteinForm.protein || '', oninput: (e) => proteinForm.protein = e.target.value }));
+  el.appendChild(fg2);
+
+  const fg3 = h('div', { class: 'form-group' });
+  fg3.appendChild(h('label', { class: 'form-label' }, 'SERVING DESCRIPTION'));
+  fg3.appendChild(h('input', { class: 'form-input', placeholder: 'e.g. 100g pot', value: proteinForm.servingDesc || '', oninput: (e) => proteinForm.servingDesc = e.target.value }));
+  el.appendChild(fg3);
+
+  el.appendChild(h('button', { class: 'btn', onclick: () => {
+    if (!proteinForm.name || !proteinForm.protein) { showToast('NEED NAME & PROTEIN'); return; }
+    const maxId = STATE.proteinFoods.reduce((max, f) => Math.max(max, f.id), 0);
+    STATE.proteinFoods.push({
+      id: maxId + 1,
+      name: proteinForm.name,
+      proteinPer: parseFloat(proteinForm.protein),
+      servingDesc: proteinForm.servingDesc || '1 serving',
+    });
+    saveState(); proteinForm = {}; showToast('FOOD ADDED'); renderProtein();
+  }}, 'ADD FOOD'));
+}
+
+function renderTemplates(el) {
+  const target = 180;
+
+  // Existing templates
+  if (STATE.proteinTemplates.length > 0) {
+    STATE.proteinTemplates.forEach((tpl, idx) => {
+      const total = calcTemplateProtein(tpl);
+      const card = h('div', { class: 'tpl-card', onclick: () => { card.classList.toggle('expanded'); } });
+      const head = h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+        h('span', { class: 'tpl-name' }, tpl.name),
+        h('span', { class: 'tpl-total', style: { color: total >= target ? 'var(--green)' : 'var(--red)' } }, total + 'g'),
+      );
+      card.appendChild(head);
+
+      const items = h('div', { class: 'tpl-items' });
+      tpl.items.forEach(item => {
+        const food = STATE.proteinFoods.find(f => f.id === item.foodId);
+        if (food && item.servings > 0) {
+          items.appendChild(h('div', { style: { padding: '3px 0', display: 'flex', justifyContent: 'space-between' } },
+            h('span', null, `${item.servings}x ${food.name}`),
+            h('span', { style: { color: 'var(--accent)', fontFamily: 'var(--mono)' } }, `${food.proteinPer * item.servings}g`),
+          ));
+        }
+      });
+      items.appendChild(h('div', { style: { marginTop: '8px', display: 'flex', gap: '8px' } },
+        h('button', { class: 'btn secondary', style: { width: 'auto', padding: '6px 12px', fontSize: '10px' }, onclick: (e) => {
+          e.stopPropagation();
+          proteinForm = { editing: idx, name: tpl.name, servings: {} };
+          tpl.items.forEach(item => { proteinForm.servings[item.foodId] = item.servings; });
+          renderProtein();
+        }}, 'EDIT'),
+        h('button', { class: 'btn danger', style: { width: 'auto', padding: '6px 12px' }, onclick: (e) => {
+          e.stopPropagation();
+          if (confirm(`Delete "${tpl.name}"?`)) {
+            STATE.proteinTemplates.splice(idx, 1);
+            saveState(); renderProtein();
+          }
+        }}, 'DELETE'),
+      ));
+      card.appendChild(items);
+      el.appendChild(card);
+    });
+  } else {
+    el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '16px' } }, 'No day plans yet. Build one below from your foods.'));
+  }
+
+  // Build / edit template
+  const isEditing = proteinForm.editing !== undefined;
+  el.appendChild(h('div', { class: 'section-title', style: { marginTop: '20px' } }, isEditing ? 'EDIT DAY PLAN' : 'NEW DAY PLAN'));
+
+  if (!proteinForm.servings) proteinForm.servings = {};
+
+  const nameGroup = h('div', { class: 'form-group' });
+  nameGroup.appendChild(h('label', { class: 'form-label' }, 'PLAN NAME'));
+  nameGroup.appendChild(h('input', { class: 'form-input', placeholder: 'e.g. Work day', value: proteinForm.name || '', oninput: (e) => proteinForm.name = e.target.value }));
+  el.appendChild(nameGroup);
+
+  // Food servings steppers
+  let runTotal = 0;
+  STATE.proteinFoods.forEach(food => {
+    const count = proteinForm.servings[food.id] || 0;
+    runTotal += food.proteinPer * count;
+
+    const row = h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 0', borderBottom: '1px solid var(--border)' } },
+      h('div', { style: { flex: 1 } },
+        h('div', { style: { fontSize: '13px' } }, food.name),
+        h('div', { style: { color: 'var(--dim)', fontSize: '11px' } }, food.proteinPer + 'g per ' + food.servingDesc),
+      ),
+      h('div', { class: 'stepper' },
+        h('button', { onclick: () => {
+          proteinForm.servings[food.id] = Math.max(0, (proteinForm.servings[food.id] || 0) - 1);
+          renderProtein();
+        }}, '-'),
+        h('div', { class: 'stepper-val' }, String(count)),
+        h('button', { onclick: () => {
+          proteinForm.servings[food.id] = (proteinForm.servings[food.id] || 0) + 1;
+          renderProtein();
+        }}, '+'),
+      ),
+      h('div', { style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: '13px', fontWeight: '600', minWidth: '36px', textAlign: 'right' } },
+        count > 0 ? (food.proteinPer * count) + 'g' : '—'),
+    );
+    el.appendChild(row);
+  });
+
+  // Running total
+  const totalDiv = h('div', { class: 'protein-total' });
+  const numSpan = h('span', { class: 'pt-num ' + (runTotal >= target ? 'hit' : 'miss') }, String(runTotal));
+  totalDiv.appendChild(numSpan);
+  totalDiv.appendChild(h('span', { class: 'pt-target' }, ' / ' + target + 'g'));
+  if (runTotal < target) {
+    totalDiv.appendChild(h('div', { style: { color: 'var(--red)', fontSize: '12px', fontFamily: 'var(--mono)', marginTop: '4px' } }, (target - runTotal) + 'g short'));
+  }
+  el.appendChild(totalDiv);
+
+  // Save button
+  el.appendChild(h('button', { class: 'btn', onclick: () => {
+    if (!proteinForm.name) { showToast('NEED A NAME'); return; }
+    const items = Object.entries(proteinForm.servings)
+      .filter(([_, s]) => s > 0)
+      .map(([fid, s]) => ({ foodId: parseInt(fid), servings: s }));
+    if (items.length === 0) { showToast('ADD SOME FOOD'); return; }
+
+    if (isEditing) {
+      STATE.proteinTemplates[proteinForm.editing] = { ...STATE.proteinTemplates[proteinForm.editing], name: proteinForm.name, items };
+    } else {
+      STATE.proteinTemplates.push({ id: Date.now(), name: proteinForm.name, items });
+    }
+    saveState(); proteinForm = {}; showToast(isEditing ? 'PLAN UPDATED' : 'PLAN SAVED'); renderProtein();
+  }}, isEditing ? 'UPDATE PLAN' : 'SAVE PLAN'));
+
+  if (isEditing) {
+    el.appendChild(h('button', { class: 'btn secondary', style: { marginTop: '8px' }, onclick: () => { proteinForm = {}; renderProtein(); } }, 'CANCEL'));
+  }
+}
+
+function calcTemplateProtein(tpl) {
+  return tpl.items.reduce((sum, item) => {
+    const food = STATE.proteinFoods.find(f => f.id === item.foodId);
+    return sum + (food ? food.proteinPer * item.servings : 0);
+  }, 0);
 }
 
 // ═══════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════
 function renderAll() {
+  updateHeader();
   renderProgram();
   renderDiet();
   renderRules();
   renderLog();
   renderProgress();
+  renderProtein();
 }
 
 migrateFromIndexedDB();
