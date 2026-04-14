@@ -302,6 +302,53 @@ const SESSIONS = {
 };
 
 // ═══════════════════════════════════════════════════════════
+// BJJ SOLO DRILLING ROUTINE — 30 min, min 2x/week
+// ═══════════════════════════════════════════════════════════
+const BJJ_SOLO = [
+  { name: 'Activation', duration: 3, purpose: 'Nervous system activation — not a warmup. Meant to feel like a switch flipping.',
+    drills: [
+      { name: 'Explosive Hip Bridges', reps: '10', notes: 'Not slow. Violent. Each one is a real escape attempt.' },
+      { name: 'Explosive Level Changes', reps: '10', notes: 'From standing — drop hips fast, drive back up. Loading a shot.' },
+      { name: 'Sprawls', reps: '10', notes: 'Hips to floor, fast. Reset each time.' },
+    ],
+    cue: "Don't pace yourself. This is meant to feel like a switch flipping." },
+  { name: 'Movement Flow', duration: 5, purpose: 'BJJ movement patterns, continuous, no stopping. Making movement automatic.',
+    drills: [
+      { name: 'Hip Escapes / Shrimps', reps: 'Down the mat & back', notes: 'Drive off the foot, full hip extension each rep.' },
+      { name: 'Granby Rolls', reps: 'Both directions, continuous', notes: 'Roll across shoulder, not neck. Panic button.' },
+      { name: 'Technical Standup from Seated', reps: 'Continuous', notes: 'Sit, base, stand, drop back down. Continuous.' },
+      { name: 'Combat Base Switches', reps: 'Continuous', notes: 'On knees, switch knee-up fluidly. Stay low.' },
+    ],
+    cue: 'Your body moves like this constantly, not just when you decide to.' },
+  { name: 'Arm Drag Entries', duration: 8, purpose: 'Your A-game. Building the thing that requires you to act first.',
+    drills: [
+      { name: 'Arm Drag from Standing', reps: '10 each side', notes: 'Wrist, pull across, circle behind, seatbelt. Move your feet.' },
+      { name: 'Arm Drag from Seated Butterfly Guard', reps: '10 each side', notes: 'Both hooks, wrist control, drag, kick the hook on the drag side, come up.' },
+      { name: 'Arm Drag from Failed Attempt', reps: '10 each side', notes: 'They retract — follow their arm back, take the back with their pulling momentum.' },
+    ],
+    cue: "After every 10 reps, pause 10 seconds, then go again with more intent. You're programming a movement." },
+  { name: 'Scramble Response Chains', duration: 8, purpose: 'Pre-loading automatic answers to scrambles for when tired.',
+    drills: [
+      { name: 'Bridge & Roll Response (top mount)', reps: '15', notes: 'Feel the bridge telegraph. Drop weight forward, post, take the back as they roll.' },
+      { name: 'Leg Attack Read (sprawl to transition)', reps: '15', notes: 'Sprawl, then immediately body lock or snap head down. Sprawl is a transition.' },
+      { name: 'Back Escape Anticipation', reps: '15', notes: 'Far hand on far hip, hooks squeezing, before they explode. Practice the grip hunt.' },
+    ],
+    cue: "Shadow drills — imagine the opponent loading an explosion and you're already moving before they finish it." },
+  { name: 'Unfinished Chains', duration: 4, purpose: 'Converting off-balance moments into takedowns.',
+    drills: [
+      { name: 'Off Balance Forward → Single Leg', reps: '10 (slow x2, then speed)', notes: 'Their posted leg is your single. Step in, head outside, scoop.' },
+      { name: 'Off Balance Sideways → Hip Bump → Body Lock', reps: '10 (slow x2, then speed)', notes: "Close distance, chest to side, body lock, take back/down." },
+    ],
+    cue: 'Walk through each chain slowly twice, then drill at speed.' },
+  { name: 'Tired Finisher', duration: 2, purpose: 'The most important block. Simulates the exact condition where you go passive.',
+    drills: [
+      { name: 'Burpees', reps: '20', notes: "Full burpees. Don't pace them. Lungs burning, brain foggy." },
+      { name: 'Arm Drag Sequence Under Fatigue', reps: '5 each side, immediately after burpees', notes: 'Standing both sides, then butterfly both sides. Full intent. Ugly is fine.' },
+    ],
+    cue: "This is the block you'll want to skip. Don't. Drill it 100 times and it'll be there when it matters." },
+];
+
+// ═══════════════════════════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════════════════════════
 const STORAGE_KEY = 'phase1-tracker-v2';
@@ -524,7 +571,7 @@ function renderProgram() {
   // Weekly minimums
   const wmin = h('div', { class: 'section' });
   wmin.appendChild(h('div', { class: 'section-title' }, 'WEEKLY MINIMUMS'));
-  [{n:'Gym (Session A or B)',c:'3x'}, {n:'BJJ',c:'2x',note:'Build to 3x by week 8'}, {n:'Run (easy, 3-5mi)',c:'1x'}, {n:'Striking',c:'1x',note:'When returned'}].forEach(w => {
+  [{n:'Gym (Session A or B)',c:'3x'}, {n:'BJJ',c:'2x',note:'Build to 3x by week 8'}, {n:'BJJ Solo Drilling',c:'2x',note:'30 min, home/garage'}, {n:'Run (easy, 3-5mi)',c:'1x'}, {n:'Striking',c:'1x',note:'When returned'}].forEach(w => {
     const row = h('div', { class: 'wmin-row' },
       h('span', { class: 'wmin-icon', style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontWeight: '700', fontSize: '14px' } }, '*'),
       h('span', { class: 'wmin-name' }, w.n),
@@ -567,6 +614,29 @@ function renderProgram() {
     }
     el.appendChild(sec);
   });
+
+  // BJJ Solo Drilling
+  const solo = h('div', { class: 'section' });
+  solo.appendChild(h('div', { class: 'section-title' }, 'BJJ SOLO DRILLING — 30 MIN'));
+  solo.appendChild(h('div', { style: { fontSize: '12px', color: 'var(--muted)', marginBottom: '6px' } }, 'Min 2x/week. Home or garage. White-belt A-game: arm drag → back. Builds the chains you go passive on when tired.'));
+  solo.appendChild(h('div', { class: 'collapse-toggle', onclick: () => { expandedSessions['solo'] = !expandedSessions['solo']; renderProgram(); } },
+    (expandedSessions['solo'] ? '- HIDE' : '+ SHOW BLOCKS')));
+  if (expandedSessions['solo']) {
+    BJJ_SOLO.forEach((block, i) => {
+      solo.appendChild(h('div', { class: 'group-label' }, `${i+1}. ${block.name.toUpperCase()} — ${block.duration} MIN`));
+      solo.appendChild(h('div', { style: { fontSize: '12px', color: 'var(--muted)', marginBottom: '6px', fontStyle: 'italic' } }, block.purpose));
+      block.drills.forEach(d => {
+        const row = h('div', { class: 'ex-row' },
+          h('span', { class: 'ex-name' }, d.name),
+          h('span', { class: 'ex-sets' }, d.reps),
+        );
+        row.appendChild(h('div', { class: 'ex-note' }, d.notes));
+        solo.appendChild(row);
+      });
+      solo.appendChild(h('div', { style: { fontSize: '11px', color: 'var(--accent)', margin: '6px 0 14px', fontFamily: 'var(--mono)' } }, 'CUE: ' + block.cue));
+    });
+  }
+  el.appendChild(solo);
 
   // Running
   const run = h('div', { class: 'section' });
@@ -671,8 +741,8 @@ function renderLog() {
 }
 
 function renderWorkoutForm(el) {
-  const types = ['gym_a', 'gym_b', 'bjj', 'run', 'striking', 'home'];
-  const typeLabels = { gym_a: 'Gym — Session A', gym_b: 'Gym — Session B', bjj: 'BJJ', run: 'Run', striking: 'Striking', home: 'Home Workout' };
+  const types = ['gym_a', 'gym_b', 'bjj', 'bjj_solo', 'run', 'striking', 'home'];
+  const typeLabels = { gym_a: 'Gym — Session A', gym_b: 'Gym — Session B', bjj: 'BJJ', bjj_solo: 'BJJ Solo Drilling', run: 'Run', striking: 'Striking', home: 'Home Workout' };
 
   if (!logForm.type) logForm.type = 'gym_a';
   if (!logForm.exData) logForm.exData = {};
@@ -680,7 +750,7 @@ function renderWorkoutForm(el) {
   // Type select
   const typeGroup = h('div', { class: 'form-group' });
   typeGroup.appendChild(h('label', { class: 'form-label' }, 'WORKOUT TYPE'));
-  const sel = h('select', { class: 'form-select', onchange: (e) => { logForm.type = e.target.value; logForm.exData = {}; renderLog(); } });
+  const sel = h('select', { class: 'form-select', onchange: (e) => { logForm.type = e.target.value; logForm.exData = {}; logForm.drills = {}; renderLog(); } });
   types.forEach(t => {
     const opt = h('option', { value: t }, typeLabels[t]);
     if (t === logForm.type) opt.selected = true;
@@ -694,6 +764,27 @@ function renderWorkoutForm(el) {
   durGroup.appendChild(h('label', { class: 'form-label' }, 'DURATION (MINS)'));
   durGroup.appendChild(h('input', { class: 'form-input', type: 'number', placeholder: '60', value: logForm.duration || '', oninput: (e) => logForm.duration = e.target.value }));
   el.appendChild(durGroup);
+
+  // BJJ solo drilling: simplified checkbox list per block
+  if (logForm.type === 'bjj_solo') {
+    if (!logForm.drills) logForm.drills = {};
+    BJJ_SOLO.forEach((block, bi) => {
+      el.appendChild(h('div', { class: 'group-label' }, `${bi+1}. ${block.name.toUpperCase()} — ${block.duration} MIN`));
+      block.drills.forEach((d, di) => {
+        const dKey = `${bi}_${di}`;
+        if (logForm.drills[dKey] === undefined) logForm.drills[dKey] = false;
+        const checked = logForm.drills[dKey];
+        const row = h('div', { class: 'check-row' });
+        const box = h('div', { class: 'check-box' + (checked ? ' checked' : '') }, checked ? 'Y' : '');
+        box.onclick = (e) => { e.stopPropagation(); logForm.drills[dKey] = !logForm.drills[dKey]; renderLog(); };
+        row.appendChild(box);
+        row.appendChild(h('span', { class: 'lift-name' }, d.name));
+        row.appendChild(h('span', { class: 'lift-reps' }, d.reps));
+        row.onclick = () => { logForm.drills[dKey] = !logForm.drills[dKey]; renderLog(); };
+        el.appendChild(row);
+      });
+    });
+  }
 
   // Exercise checkboxes for gym/home sessions
   const session = SESSIONS[logForm.type];
@@ -777,6 +868,16 @@ function saveWorkout() {
     id: Date.now(), date: today(), type: logForm.type || 'gym_a',
     notes: logForm.notes || '', duration: logForm.duration || '', liftUpdates: {}
   };
+
+  if (logForm.type === 'bjj_solo' && logForm.drills) {
+    entry.drillsCompleted = [];
+    Object.entries(logForm.drills).forEach(([dKey, done]) => {
+      if (!done) return;
+      const [bi, di] = dKey.split('_').map(Number);
+      const drill = BJJ_SOLO[bi] && BJJ_SOLO[bi].drills[di];
+      if (drill) entry.drillsCompleted.push(`${BJJ_SOLO[bi].name}: ${drill.name}`);
+    });
+  }
 
   if (logForm.exData) {
     Object.entries(logForm.exData).forEach(([key, exd]) => {
@@ -877,10 +978,11 @@ function renderProgress() {
   const counts = {
     Gym: thisWeek.filter(l => l.type.startsWith('gym') || l.type === 'home').length,
     BJJ: thisWeek.filter(l => l.type === 'bjj').length,
+    'BJJ Solo': thisWeek.filter(l => l.type === 'bjj_solo').length,
     Run: thisWeek.filter(l => l.type === 'run').length,
     Striking: thisWeek.filter(l => l.type === 'striking').length,
   };
-  const targets = { Gym: 3, BJJ: 2, Run: 1, Striking: 1 };
+  const targets = { Gym: 3, BJJ: 2, 'BJJ Solo': 2, Run: 1, Striking: 1 };
 
   const freq = h('div', { class: 'section' });
   freq.appendChild(h('div', { class: 'section-title' }, `THIS WEEK (WEEK ${weekNum()})`));
