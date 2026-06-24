@@ -199,7 +199,7 @@ document.head.appendChild(link);
 
 <div class="container">
   <div class="header">
-    <div class="tag" id="phase-tag">PHASE 1 — WEEK 1</div>
+    <div class="tag" id="phase-tag">PHASE 2 — WEEK 1</div>
     <h1>Base Building</h1>
     <div class="sub">Build the chassis. Get strong. Get lean. Get conditioned.</div>
   </div>
@@ -459,8 +459,10 @@ function weekNum() {
   return Math.max(1, Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000)) + 1);
 }
 
+const PHASE = { num: 2, name: 'Combat Support' };
+
 function updateHeader() {
-  document.getElementById('phase-tag').textContent = `PHASE 1 — WEEK ${weekNum()}`;
+  document.getElementById('phase-tag').textContent = `PHASE ${PHASE.num} — WEEK ${weekNum()}`;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -492,8 +494,8 @@ function renderProgram() {
   el.innerHTML = '';
 
   el.appendChild(h('div', { class: 'info-box' },
-    h('div', { class: 'label' }, 'PHASE 1 — BASE BUILDING'),
-    h('div', null, '12 weeks. Build the chassis. Get strong, get lean, build the conditioning base.'),
+    h('div', { class: 'label' }, `PHASE ${PHASE.num} — ${PHASE.name.toUpperCase()}`),
+    h('div', null, 'Combat-led week. Gym is a 2x upper-biased support block — build what the mat, road and bag don\'t. Maintain legs; drive upper body, grip and arms.'),
     h('div', { style: { color: 'var(--muted)', fontSize: '12px', marginTop: '8px' } }, 'Priority when time is short: BJJ > Gym > Striking > Run. No zero weeks.')
   ));
 
