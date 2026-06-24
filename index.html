@@ -174,17 +174,6 @@ document.head.appendChild(link);
   .adjust-form button.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
 
   .group-label { color: var(--accent); font: 700 10px/1 var(--mono); letter-spacing: 2px; padding: 10px 0 4px; }
-
-  .protein-total { padding: 16px; text-align: center; margin: 12px 0; border: 1px solid var(--border); background: var(--surface); }
-  .protein-total .pt-num { font: 700 36px var(--mono); }
-  .protein-total .pt-num.hit { color: var(--green); }
-  .protein-total .pt-num.miss { color: var(--red); }
-  .protein-total .pt-target { color: var(--muted); font: 12px var(--mono); }
-
-  .food-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--border); }
-  .food-row .food-name { flex: 1; font-size: 13px; }
-  .food-row .food-protein { color: var(--accent); font: 600 13px var(--mono); }
-  .food-row .food-serving { color: var(--dim); font-size: 11px; }
   .food-row .food-del { color: var(--red); font-size: 14px; cursor: pointer; padding: 4px 8px; opacity: 0.5; touch-action: manipulation; }
 
   .stepper { display: inline-flex; align-items: center; }
@@ -222,7 +211,6 @@ document.head.appendChild(link);
   <div id="panel-rules" class="panel"></div>
   <div id="panel-log" class="panel"></div>
   <div id="panel-progress" class="panel"></div>
-  <div id="panel-protein" class="panel"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -250,6 +238,8 @@ const EX = {
   farmer_walk:  { name: "Farmer's Walks",      type: 'dumbbell',   category: 'add', sets: 3, progression: 'weight', unit: '30m' },
   ab_wheel:     { name: 'Ab Wheel Rollout',    type: 'bodyweight', category: 'add', sets: 3, targetReps: 8,  progression: 'reps' },
   dead_hang:    { name: 'Dead Hangs',          type: 'time',       category: 'add', sets: 3, progression: 'time' },
+  kb_swing:     { name: 'Kettlebell Swing',    type: 'kettlebell', category: 'add', sets: 3, targetReps: 15, progression: 'weight', dualAdjust: true },
+  leg_raise:    { name: 'Hanging Leg Raise',   type: 'bodyweight', category: 'add', sets: 3, targetReps: 10, progression: 'reps',   dualAdjust: true },
   pushup:       { name: 'Push-ups',            type: 'bodyweight', category: 'home', sets: 4, progression: 'reps' },
   bss:          { name: 'Bulgarian Split Sq',  type: 'bodyweight', category: 'home', sets: 4, targetReps: 12, progression: 'reps' },
   inverted_row: { name: 'Inverted Rows',       type: 'bodyweight', category: 'home', sets: 4, targetReps: 12, progression: 'reps' },
@@ -266,19 +256,12 @@ const DEFAULT_EXERCISES = {
   face_pull: { weight: 10 }, barbell_curl: { weight: 20 }, lat_pulldown: { weight: 40 },
   db_shoulder: { weight: 10 }, tricep_ext: { weight: 15 }, hammer_curl: { weight: 10 },
   hip_thrust: { weight: 40 }, farmer_walk: { weight: 20 },
+  kb_swing: { weight: 16, reps: 15 }, leg_raise: { reps: 10, weight: 0 },
   pullup: { reps: 0 }, dip: { reps: 10 }, ab_wheel: { reps: 8 },
   pushup: { reps: 0 }, bss: { reps: 12 }, inverted_row: { reps: 12 }, pike_pushup: { reps: 10 },
   dead_hang: { seconds: 30 }, plank: { seconds: 60 }, hangboard: { seconds: 0 },
   elliptical: { minutes: 20, avgHR: null },
 };
-
-const DEFAULT_PROTEIN_FOODS = [
-  { id: 1, name: 'Chicken fillet', proteinPer: 31, servingDesc: '1 fillet (~100g)' },
-  { id: 2, name: 'Scrambled eggs (x4)', proteinPer: 24, servingDesc: '4 eggs' },
-  { id: 3, name: 'Tinned tuna', proteinPer: 25, servingDesc: '1 tin drained' },
-  { id: 4, name: 'Greek yoghurt (fat free)', proteinPer: 50, servingDesc: '500g tub' },
-  { id: 5, name: 'Protein powder', proteinPer: 24, servingDesc: '1 scoop' },
-];
 
 // ═══════════════════════════════════════════════════════════
 // SESSIONS
@@ -286,67 +269,22 @@ const DEFAULT_PROTEIN_FOODS = [
 const SESSIONS = {
   gym_a: { label: 'Gym — Session A', groups: [
     { label: 'CARDIO', keys: ['elliptical'] },
-    { label: 'MAIN LIFTS', keys: ['squat', 'bench', 'row', 'ohp'], hint: 'Check = completed all sets at current reps. Auto-advances.' },
-    { label: 'ACCESSORIES', keys: ['face_pull', 'barbell_curl'] },
-    { label: 'ADDITIONAL', keys: ['hip_thrust', 'farmer_walk', 'ab_wheel', 'dead_hang'], hint: 'Optional ~10 min extra' },
+    { label: 'MAIN LIFTS', keys: ['squat', 'bench', 'row', 'ohp'], hint: 'Squat maintains; press/row drive the upper body. Check = all sets at current reps, auto-advances.' },
+    { label: 'BRIDGE & CORE', keys: ['hip_thrust', 'ab_wheel'] },
+    { label: 'ARMS & POSTURE', keys: ['barbell_curl', 'face_pull'] },
+    { label: 'GRIP', keys: ['farmer_walk', 'dead_hang'] },
   ]},
   gym_b: { label: 'Gym — Session B', groups: [
     { label: 'CARDIO', keys: ['elliptical'] },
-    { label: 'MAIN LIFTS', keys: ['deadlift', 'bench'], hint: 'Check = completed all sets at current reps. Auto-advances.' },
-    { label: 'ACCESSORIES', keys: ['pullup', 'lat_pulldown', 'db_shoulder', 'dip', 'tricep_ext', 'hammer_curl'], hint: 'Check exercises you did' },
-    { label: 'ADDITIONAL', keys: ['hip_thrust', 'farmer_walk', 'ab_wheel', 'dead_hang'], hint: 'Optional ~10 min extra' },
+    { label: 'MAIN LIFTS', keys: ['deadlift', 'bench'], hint: 'Deadlift maintains; bench gets twice-weekly frequency. Check = auto-advances.' },
+    { label: 'BACK & SHOULDERS', keys: ['pullup', 'lat_pulldown', 'db_shoulder'], hint: 'Progress pull-ups deliberately — add a rep when you can.' },
+    { label: 'ARMS', keys: ['dip', 'tricep_ext', 'hammer_curl'] },
+    { label: 'BJJ POWER & GRIP', keys: ['kb_swing', 'leg_raise', 'farmer_walk', 'dead_hang'], hint: 'Swing = explosive hip drive (bridge/sweep). Leg raise = guard retention.' },
   ]},
   home: { label: 'Home Workout', groups: [
     { label: 'EXERCISES', keys: ['pushup', 'bss', 'inverted_row', 'pike_pushup', 'plank', 'hangboard'] },
   ]},
 };
-
-// ═══════════════════════════════════════════════════════════
-// BJJ SOLO DRILLING ROUTINE — 30 min, min 2x/week
-// ═══════════════════════════════════════════════════════════
-const BJJ_SOLO = [
-  { name: 'Activation', duration: 3, purpose: 'Nervous system activation — not a warmup. Meant to feel like a switch flipping.',
-    drills: [
-      { name: 'Explosive Hip Bridges', reps: '10', notes: 'Not slow. Violent. Each one is a real escape attempt.' },
-      { name: 'Explosive Level Changes', reps: '10', notes: 'From standing — drop hips fast, drive back up. Loading a shot.' },
-      { name: 'Sprawls', reps: '10', notes: 'Hips to floor, fast. Reset each time.' },
-    ],
-    cue: "Don't pace yourself. This is meant to feel like a switch flipping." },
-  { name: 'Movement Flow', duration: 5, purpose: 'BJJ movement patterns, continuous, no stopping. Making movement automatic.',
-    drills: [
-      { name: 'Hip Escapes / Shrimps', reps: 'Down the mat & back', notes: 'Drive off the foot, full hip extension each rep.' },
-      { name: 'Granby Rolls', reps: 'Both directions, continuous', notes: 'Roll across shoulder, not neck. Panic button.' },
-      { name: 'Technical Standup from Seated', reps: 'Continuous', notes: 'Sit, base, stand, drop back down. Continuous.' },
-      { name: 'Combat Base Switches', reps: 'Continuous', notes: 'On knees, switch knee-up fluidly. Stay low.' },
-    ],
-    cue: 'Your body moves like this constantly, not just when you decide to.' },
-  { name: 'Arm Drag Entries', duration: 8, purpose: 'Your A-game. Building the thing that requires you to act first.',
-    drills: [
-      { name: 'Arm Drag from Standing', reps: '10 each side', notes: 'Wrist, pull across, circle behind, seatbelt. Move your feet.' },
-      { name: 'Arm Drag from Seated Butterfly Guard', reps: '10 each side', notes: 'Both hooks, wrist control, drag, kick the hook on the drag side, come up.' },
-      { name: 'Arm Drag from Failed Attempt', reps: '10 each side', notes: 'They retract — follow their arm back, take the back with their pulling momentum.' },
-    ],
-    cue: "After every 10 reps, pause 10 seconds, then go again with more intent. You're programming a movement." },
-  { name: 'Scramble Response Chains', duration: 8, purpose: 'Pre-loading automatic answers to scrambles for when tired.',
-    drills: [
-      { name: 'Bridge & Roll Response (top mount)', reps: '15', notes: 'Feel the bridge telegraph. Drop weight forward, post, take the back as they roll.' },
-      { name: 'Leg Attack Read (sprawl to transition)', reps: '15', notes: 'Sprawl, then immediately body lock or snap head down. Sprawl is a transition.' },
-      { name: 'Back Escape Anticipation', reps: '15', notes: 'Far hand on far hip, hooks squeezing, before they explode. Practice the grip hunt.' },
-    ],
-    cue: "Shadow drills — imagine the opponent loading an explosion and you're already moving before they finish it." },
-  { name: 'Unfinished Chains', duration: 4, purpose: 'Converting off-balance moments into takedowns.',
-    drills: [
-      { name: 'Off Balance Forward → Single Leg', reps: '10 (slow x2, then speed)', notes: 'Their posted leg is your single. Step in, head outside, scoop.' },
-      { name: 'Off Balance Sideways → Hip Bump → Body Lock', reps: '10 (slow x2, then speed)', notes: "Close distance, chest to side, body lock, take back/down." },
-    ],
-    cue: 'Walk through each chain slowly twice, then drill at speed.' },
-  { name: 'Tired Finisher', duration: 2, purpose: 'The most important block. Simulates the exact condition where you go passive.',
-    drills: [
-      { name: 'Burpees', reps: '20', notes: "Full burpees. Don't pace them. Lungs burning, brain foggy." },
-      { name: 'Arm Drag Sequence Under Fatigue', reps: '5 each side, immediately after burpees', notes: 'Standing both sides, then butterfly both sides. Full intent. Ugly is fine.' },
-    ],
-    cue: "This is the block you'll want to skip. Don't. Drill it 100 times and it'll be there when it matters." },
-];
 
 // ═══════════════════════════════════════════════════════════
 // STORAGE
@@ -360,8 +298,6 @@ const DEFAULT_STATE = {
   weightHistory: [],
   phaseStart: new Date().toISOString().split('T')[0],
   phases: [],
-  proteinFoods: JSON.parse(JSON.stringify(DEFAULT_PROTEIN_FOODS)),
-  proteinTemplates: [],
 };
 
 let STATE = JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -414,8 +350,6 @@ function migrateState(saved) {
     saved.phaseStart = saved.workoutLogs.length > 0 ? saved.workoutLogs[0].date : new Date().toISOString().split('T')[0];
   }
   if (!saved.phases) saved.phases = [];
-  if (!saved.proteinFoods) saved.proteinFoods = JSON.parse(JSON.stringify(DEFAULT_PROTEIN_FOODS));
-  if (!saved.proteinTemplates) saved.proteinTemplates = [];
 
   return saved;
 }
@@ -514,7 +448,7 @@ function exSets(key) {
   const def = EX[key], st = STATE.exercises[key] || {};
   if (def.category === 'main') return `${def.sets}x${st.reps}`;
   if (def.type === 'cardio') return '';
-  const reps = def.targetReps || (def.progression === 'reps' ? (st.reps || 'max') : '');
+  const reps = (st.reps !== undefined ? st.reps : def.targetReps) || (def.progression === 'reps' ? (st.reps || 'max') : '');
   if (def.progression === 'time') return `${def.sets}x${st.seconds === 0 ? 'max' : st.seconds + 's'}`;
   return `${def.sets}x${reps || 'max'}`;
 }
@@ -532,7 +466,7 @@ function updateHeader() {
 // ═══════════════════════════════════════════════════════════
 // TABS
 // ═══════════════════════════════════════════════════════════
-const TABS = ['Program', 'Diet', 'Rules', 'Log', 'Progress', 'Protein'];
+const TABS = ['Program', 'Diet', 'Rules', 'Log', 'Progress'];
 let activeTab = 'Program';
 
 function renderTabs() {
@@ -571,7 +505,7 @@ function renderProgram() {
   // Weekly minimums
   const wmin = h('div', { class: 'section' });
   wmin.appendChild(h('div', { class: 'section-title' }, 'WEEKLY MINIMUMS'));
-  [{n:'Gym (Session A or B)',c:'3x'}, {n:'BJJ',c:'2x',note:'Build to 3x by week 8'}, {n:'BJJ Solo Drilling',c:'2x',note:'30 min, home/garage'}, {n:'Run (easy, 3-5mi)',c:'1x'}, {n:'Striking',c:'1x',note:'When returned'}].forEach(w => {
+  [{n:'BJJ',c:'3x'}, {n:'Gym (Session A or B)',c:'2x'}, {n:'Striking / Kickboxing',c:'1x'}, {n:'Run (easy, 3-5mi)',c:'1x'}].forEach(w => {
     const row = h('div', { class: 'wmin-row' },
       h('span', { class: 'wmin-icon', style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontWeight: '700', fontSize: '14px' } }, '*'),
       h('span', { class: 'wmin-name' }, w.n),
@@ -614,29 +548,6 @@ function renderProgram() {
     }
     el.appendChild(sec);
   });
-
-  // BJJ Solo Drilling
-  const solo = h('div', { class: 'section' });
-  solo.appendChild(h('div', { class: 'section-title' }, 'BJJ SOLO DRILLING — 30 MIN'));
-  solo.appendChild(h('div', { style: { fontSize: '12px', color: 'var(--muted)', marginBottom: '6px' } }, 'Min 2x/week. Home or garage. White-belt A-game: arm drag → back. Builds the chains you go passive on when tired.'));
-  solo.appendChild(h('div', { class: 'collapse-toggle', onclick: () => { expandedSessions['solo'] = !expandedSessions['solo']; renderProgram(); } },
-    (expandedSessions['solo'] ? '- HIDE' : '+ SHOW BLOCKS')));
-  if (expandedSessions['solo']) {
-    BJJ_SOLO.forEach((block, i) => {
-      solo.appendChild(h('div', { class: 'group-label' }, `${i+1}. ${block.name.toUpperCase()} — ${block.duration} MIN`));
-      solo.appendChild(h('div', { style: { fontSize: '12px', color: 'var(--muted)', marginBottom: '6px', fontStyle: 'italic' } }, block.purpose));
-      block.drills.forEach(d => {
-        const row = h('div', { class: 'ex-row' },
-          h('span', { class: 'ex-name' }, d.name),
-          h('span', { class: 'ex-sets' }, d.reps),
-        );
-        row.appendChild(h('div', { class: 'ex-note' }, d.notes));
-        solo.appendChild(row);
-      });
-      solo.appendChild(h('div', { style: { fontSize: '11px', color: 'var(--accent)', margin: '6px 0 14px', fontFamily: 'var(--mono)' } }, 'CUE: ' + block.cue));
-    });
-  }
-  el.appendChild(solo);
 
   // Running
   const run = h('div', { class: 'section' });
@@ -741,8 +652,8 @@ function renderLog() {
 }
 
 function renderWorkoutForm(el) {
-  const types = ['gym_a', 'gym_b', 'bjj', 'bjj_solo', 'run', 'striking', 'home'];
-  const typeLabels = { gym_a: 'Gym — Session A', gym_b: 'Gym — Session B', bjj: 'BJJ', bjj_solo: 'BJJ Solo Drilling', run: 'Run', striking: 'Striking', home: 'Home Workout' };
+  const types = ['gym_a', 'gym_b', 'bjj', 'run', 'striking', 'home'];
+  const typeLabels = { gym_a: 'Gym — Session A', gym_b: 'Gym — Session B', bjj: 'BJJ', run: 'Run', striking: 'Striking', home: 'Home Workout' };
 
   if (!logForm.type) logForm.type = 'gym_a';
   if (!logForm.exData) logForm.exData = {};
@@ -750,7 +661,7 @@ function renderWorkoutForm(el) {
   // Type select
   const typeGroup = h('div', { class: 'form-group' });
   typeGroup.appendChild(h('label', { class: 'form-label' }, 'WORKOUT TYPE'));
-  const sel = h('select', { class: 'form-select', onchange: (e) => { logForm.type = e.target.value; logForm.exData = {}; logForm.drills = {}; renderLog(); } });
+  const sel = h('select', { class: 'form-select', onchange: (e) => { logForm.type = e.target.value; logForm.exData = {}; renderLog(); } });
   types.forEach(t => {
     const opt = h('option', { value: t }, typeLabels[t]);
     if (t === logForm.type) opt.selected = true;
@@ -764,27 +675,6 @@ function renderWorkoutForm(el) {
   durGroup.appendChild(h('label', { class: 'form-label' }, 'DURATION (MINS)'));
   durGroup.appendChild(h('input', { class: 'form-input', type: 'number', placeholder: '60', value: logForm.duration || '', oninput: (e) => logForm.duration = e.target.value }));
   el.appendChild(durGroup);
-
-  // BJJ solo drilling: simplified checkbox list per block
-  if (logForm.type === 'bjj_solo') {
-    if (!logForm.drills) logForm.drills = {};
-    BJJ_SOLO.forEach((block, bi) => {
-      el.appendChild(h('div', { class: 'group-label' }, `${bi+1}. ${block.name.toUpperCase()} — ${block.duration} MIN`));
-      block.drills.forEach((d, di) => {
-        const dKey = `${bi}_${di}`;
-        if (logForm.drills[dKey] === undefined) logForm.drills[dKey] = false;
-        const checked = logForm.drills[dKey];
-        const row = h('div', { class: 'check-row' });
-        const box = h('div', { class: 'check-box' + (checked ? ' checked' : '') }, checked ? 'Y' : '');
-        box.onclick = (e) => { e.stopPropagation(); logForm.drills[dKey] = !logForm.drills[dKey]; renderLog(); };
-        row.appendChild(box);
-        row.appendChild(h('span', { class: 'lift-name' }, d.name));
-        row.appendChild(h('span', { class: 'lift-reps' }, d.reps));
-        row.onclick = () => { logForm.drills[dKey] = !logForm.drills[dKey]; renderLog(); };
-        el.appendChild(row);
-      });
-    });
-  }
 
   // Exercise checkboxes for gym/home sessions
   const session = SESSIONS[logForm.type];
@@ -868,16 +758,6 @@ function saveWorkout() {
     id: Date.now(), date: today(), type: logForm.type || 'gym_a',
     notes: logForm.notes || '', duration: logForm.duration || '', liftUpdates: {}
   };
-
-  if (logForm.type === 'bjj_solo' && logForm.drills) {
-    entry.drillsCompleted = [];
-    Object.entries(logForm.drills).forEach(([dKey, done]) => {
-      if (!done) return;
-      const [bi, di] = dKey.split('_').map(Number);
-      const drill = BJJ_SOLO[bi] && BJJ_SOLO[bi].drills[di];
-      if (drill) entry.drillsCompleted.push(`${BJJ_SOLO[bi].name}: ${drill.name}`);
-    });
-  }
 
   if (logForm.exData) {
     Object.entries(logForm.exData).forEach(([key, exd]) => {
@@ -978,11 +858,10 @@ function renderProgress() {
   const counts = {
     Gym: thisWeek.filter(l => l.type.startsWith('gym') || l.type === 'home').length,
     BJJ: thisWeek.filter(l => l.type === 'bjj').length,
-    'BJJ Solo': thisWeek.filter(l => l.type === 'bjj_solo').length,
     Run: thisWeek.filter(l => l.type === 'run').length,
     Striking: thisWeek.filter(l => l.type === 'striking').length,
   };
-  const targets = { Gym: 3, BJJ: 2, 'BJJ Solo': 2, Run: 1, Striking: 1 };
+  const targets = { Gym: 2, BJJ: 3, Run: 1, Striking: 1 };
 
   const freq = h('div', { class: 'section' });
   freq.appendChild(h('div', { class: 'section-title' }, `THIS WEEK (WEEK ${weekNum()})`));
@@ -1227,7 +1106,7 @@ function buildExCard(key, def, st) {
     const valDiv = h('div', { class: 'stat-value gold', style: { fontSize: '20px' } });
     valDiv.textContent = st.reps === 0 ? 'max' : st.reps;
     card.appendChild(valDiv);
-    card.appendChild(h('div', { class: 'stat-sub' }, def.sets + 'x reps'));
+    card.appendChild(h('div', { class: 'stat-sub' }, def.sets + 'x reps' + (def.dualAdjust && st.weight ? ' @ ' + st.weight + 'kg' : '')));
   } else if (def.progression === 'time') {
     const valDiv = h('div', { class: 'stat-value gold', style: { fontSize: '20px' } });
     valDiv.textContent = st.seconds === 0 ? 'max' : st.seconds + 's';
@@ -1243,7 +1122,24 @@ function buildExCard(key, def, st) {
 
   if (adjustingEx === key) {
     const form = h('div', { class: 'adjust-form' });
-    if (def.type === 'cardio') {
+    if (def.dualAdjust) {
+      const wInput = h('input', { type: 'number', placeholder: String(st.weight || 0), value: '' });
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, def.type === 'dumbbell' ? 'KG/H:' : 'KG:'));
+      form.appendChild(wInput);
+      const rInput = h('input', { type: 'number', placeholder: String(st.reps), value: '' });
+      form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'REPS:'));
+      form.appendChild(rInput);
+      form.appendChild(h('button', { onclick: () => {
+        const nw = parseFloat(wInput.value);
+        if (!isNaN(nw) && nw !== st.weight) {
+          STATE.weightHistory.push({ exercise: key, date: today(), oldWeight: st.weight || 0, weight: nw, manual: true });
+          st.weight = nw;
+        }
+        const nr = parseInt(rInput.value);
+        if (!isNaN(nr)) st.reps = nr;
+        saveState(); showToast('ADJUSTED'); adjustingEx = null; renderProgress();
+      }}, 'SAVE'));
+    } else if (def.type === 'cardio') {
       const mInput = h('input', { type: 'number', placeholder: st.minutes, value: '' });
       form.appendChild(h('span', { style: { color: 'var(--muted)', fontSize: '10px', fontFamily: 'var(--mono)' } }, 'MIN:'));
       form.appendChild(mInput);
@@ -1308,202 +1204,6 @@ function softRestart() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// RENDER: PROTEIN
-// ═══════════════════════════════════════════════════════════
-let proteinSubTab = 'templates';
-let proteinForm = {};
-
-function renderProtein() {
-  const el = document.getElementById('panel-protein');
-  el.innerHTML = '';
-
-  const stabs = h('div', { class: 'sub-tabs' });
-  ['templates', 'foods'].forEach(t => {
-    stabs.appendChild(h('button', {
-      class: 'sub-tab' + (proteinSubTab === t ? ' active' : ''),
-      onclick: () => { proteinSubTab = t; proteinForm = {}; renderProtein(); }
-    }, t === 'templates' ? 'DAY PLANS' : 'MY FOODS'));
-  });
-  el.appendChild(stabs);
-
-  if (proteinSubTab === 'foods') renderFoods(el);
-  else renderTemplates(el);
-}
-
-function renderFoods(el) {
-  el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '12px' } }, 'Define your foods with protein per serving. These are used to build day plans.'));
-
-  STATE.proteinFoods.forEach(food => {
-    const row = h('div', { class: 'food-row' },
-      h('div', { style: { flex: 1 } },
-        h('div', { class: 'food-name' }, food.name),
-        h('div', { class: 'food-serving' }, food.servingDesc),
-      ),
-      h('div', { class: 'food-protein' }, food.proteinPer + 'g'),
-      h('span', { class: 'food-del', onclick: () => {
-        if (confirm(`Delete ${food.name}?`)) {
-          STATE.proteinFoods = STATE.proteinFoods.filter(f => f.id !== food.id);
-          saveState(); renderProtein();
-        }
-      }}, 'x'),
-    );
-    el.appendChild(row);
-  });
-
-  // Add food form
-  el.appendChild(h('div', { class: 'section-title', style: { marginTop: '20px' } }, 'ADD FOOD'));
-  const fg1 = h('div', { class: 'form-group' });
-  fg1.appendChild(h('label', { class: 'form-label' }, 'FOOD NAME'));
-  fg1.appendChild(h('input', { class: 'form-input', placeholder: 'e.g. Cottage cheese', value: proteinForm.name || '', oninput: (e) => proteinForm.name = e.target.value }));
-  el.appendChild(fg1);
-
-  const fg2 = h('div', { class: 'form-group' });
-  fg2.appendChild(h('label', { class: 'form-label' }, 'PROTEIN PER SERVING (G)'));
-  fg2.appendChild(h('input', { class: 'form-input', type: 'number', placeholder: '14', value: proteinForm.protein || '', oninput: (e) => proteinForm.protein = e.target.value }));
-  el.appendChild(fg2);
-
-  const fg3 = h('div', { class: 'form-group' });
-  fg3.appendChild(h('label', { class: 'form-label' }, 'SERVING DESCRIPTION'));
-  fg3.appendChild(h('input', { class: 'form-input', placeholder: 'e.g. 100g pot', value: proteinForm.servingDesc || '', oninput: (e) => proteinForm.servingDesc = e.target.value }));
-  el.appendChild(fg3);
-
-  el.appendChild(h('button', { class: 'btn', onclick: () => {
-    if (!proteinForm.name || !proteinForm.protein) { showToast('NEED NAME & PROTEIN'); return; }
-    const maxId = STATE.proteinFoods.reduce((max, f) => Math.max(max, f.id), 0);
-    STATE.proteinFoods.push({
-      id: maxId + 1,
-      name: proteinForm.name,
-      proteinPer: parseFloat(proteinForm.protein),
-      servingDesc: proteinForm.servingDesc || '1 serving',
-    });
-    saveState(); proteinForm = {}; showToast('FOOD ADDED'); renderProtein();
-  }}, 'ADD FOOD'));
-}
-
-function renderTemplates(el) {
-  const target = 180;
-
-  // Existing templates
-  if (STATE.proteinTemplates.length > 0) {
-    STATE.proteinTemplates.forEach((tpl, idx) => {
-      const total = calcTemplateProtein(tpl);
-      const card = h('div', { class: 'tpl-card', onclick: () => { card.classList.toggle('expanded'); } });
-      const head = h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
-        h('span', { class: 'tpl-name' }, tpl.name),
-        h('span', { class: 'tpl-total', style: { color: total >= target ? 'var(--green)' : 'var(--red)' } }, total + 'g'),
-      );
-      card.appendChild(head);
-
-      const items = h('div', { class: 'tpl-items' });
-      tpl.items.forEach(item => {
-        const food = STATE.proteinFoods.find(f => f.id === item.foodId);
-        if (food && item.servings > 0) {
-          items.appendChild(h('div', { style: { padding: '3px 0', display: 'flex', justifyContent: 'space-between' } },
-            h('span', null, `${item.servings}x ${food.name}`),
-            h('span', { style: { color: 'var(--accent)', fontFamily: 'var(--mono)' } }, `${food.proteinPer * item.servings}g`),
-          ));
-        }
-      });
-      items.appendChild(h('div', { style: { marginTop: '8px', display: 'flex', gap: '8px' } },
-        h('button', { class: 'btn secondary', style: { width: 'auto', padding: '6px 12px', fontSize: '10px' }, onclick: (e) => {
-          e.stopPropagation();
-          proteinForm = { editing: idx, name: tpl.name, servings: {} };
-          tpl.items.forEach(item => { proteinForm.servings[item.foodId] = item.servings; });
-          renderProtein();
-        }}, 'EDIT'),
-        h('button', { class: 'btn danger', style: { width: 'auto', padding: '6px 12px' }, onclick: (e) => {
-          e.stopPropagation();
-          if (confirm(`Delete "${tpl.name}"?`)) {
-            STATE.proteinTemplates.splice(idx, 1);
-            saveState(); renderProtein();
-          }
-        }}, 'DELETE'),
-      ));
-      card.appendChild(items);
-      el.appendChild(card);
-    });
-  } else {
-    el.appendChild(h('div', { class: 'form-hint', style: { marginBottom: '16px' } }, 'No day plans yet. Build one below from your foods.'));
-  }
-
-  // Build / edit template
-  const isEditing = proteinForm.editing !== undefined;
-  el.appendChild(h('div', { class: 'section-title', style: { marginTop: '20px' } }, isEditing ? 'EDIT DAY PLAN' : 'NEW DAY PLAN'));
-
-  if (!proteinForm.servings) proteinForm.servings = {};
-
-  const nameGroup = h('div', { class: 'form-group' });
-  nameGroup.appendChild(h('label', { class: 'form-label' }, 'PLAN NAME'));
-  nameGroup.appendChild(h('input', { class: 'form-input', placeholder: 'e.g. Work day', value: proteinForm.name || '', oninput: (e) => proteinForm.name = e.target.value }));
-  el.appendChild(nameGroup);
-
-  // Food servings steppers
-  let runTotal = 0;
-  STATE.proteinFoods.forEach(food => {
-    const count = proteinForm.servings[food.id] || 0;
-    runTotal += food.proteinPer * count;
-
-    const row = h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 0', borderBottom: '1px solid var(--border)' } },
-      h('div', { style: { flex: 1 } },
-        h('div', { style: { fontSize: '13px' } }, food.name),
-        h('div', { style: { color: 'var(--dim)', fontSize: '11px' } }, food.proteinPer + 'g per ' + food.servingDesc),
-      ),
-      h('div', { class: 'stepper' },
-        h('button', { onclick: () => {
-          proteinForm.servings[food.id] = Math.max(0, (proteinForm.servings[food.id] || 0) - 1);
-          renderProtein();
-        }}, '-'),
-        h('div', { class: 'stepper-val' }, String(count)),
-        h('button', { onclick: () => {
-          proteinForm.servings[food.id] = (proteinForm.servings[food.id] || 0) + 1;
-          renderProtein();
-        }}, '+'),
-      ),
-      h('div', { style: { color: 'var(--accent)', fontFamily: 'var(--mono)', fontSize: '13px', fontWeight: '600', minWidth: '36px', textAlign: 'right' } },
-        count > 0 ? (food.proteinPer * count) + 'g' : '—'),
-    );
-    el.appendChild(row);
-  });
-
-  // Running total
-  const totalDiv = h('div', { class: 'protein-total' });
-  const numSpan = h('span', { class: 'pt-num ' + (runTotal >= target ? 'hit' : 'miss') }, String(runTotal));
-  totalDiv.appendChild(numSpan);
-  totalDiv.appendChild(h('span', { class: 'pt-target' }, ' / ' + target + 'g'));
-  if (runTotal < target) {
-    totalDiv.appendChild(h('div', { style: { color: 'var(--red)', fontSize: '12px', fontFamily: 'var(--mono)', marginTop: '4px' } }, (target - runTotal) + 'g short'));
-  }
-  el.appendChild(totalDiv);
-
-  // Save button
-  el.appendChild(h('button', { class: 'btn', onclick: () => {
-    if (!proteinForm.name) { showToast('NEED A NAME'); return; }
-    const items = Object.entries(proteinForm.servings)
-      .filter(([_, s]) => s > 0)
-      .map(([fid, s]) => ({ foodId: parseInt(fid), servings: s }));
-    if (items.length === 0) { showToast('ADD SOME FOOD'); return; }
-
-    if (isEditing) {
-      STATE.proteinTemplates[proteinForm.editing] = { ...STATE.proteinTemplates[proteinForm.editing], name: proteinForm.name, items };
-    } else {
-      STATE.proteinTemplates.push({ id: Date.now(), name: proteinForm.name, items });
-    }
-    saveState(); proteinForm = {}; showToast(isEditing ? 'PLAN UPDATED' : 'PLAN SAVED'); renderProtein();
-  }}, isEditing ? 'UPDATE PLAN' : 'SAVE PLAN'));
-
-  if (isEditing) {
-    el.appendChild(h('button', { class: 'btn secondary', style: { marginTop: '8px' }, onclick: () => { proteinForm = {}; renderProtein(); } }, 'CANCEL'));
-  }
-}
-
-function calcTemplateProtein(tpl) {
-  return tpl.items.reduce((sum, item) => {
-    const food = STATE.proteinFoods.find(f => f.id === item.foodId);
-    return sum + (food ? food.proteinPer * item.servings : 0);
-  }, 0);
-}
-
-// ═══════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════
 function renderAll() {
@@ -1513,7 +1213,6 @@ function renderAll() {
   renderRules();
   renderLog();
   renderProgress();
-  renderProtein();
 }
 
 migrateFromIndexedDB();

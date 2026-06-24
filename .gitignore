@@ -1,0 +1,8 @@
+# Private — never push. Only index.html is public.
+CLAUDE.md
+phase1-tracker.jsx
+phase1-tracker.html
+export.json
+export_*.json
+bjj_solo_routine.json
+*.xlsx
